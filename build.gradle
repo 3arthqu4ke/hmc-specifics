@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+}
+
+group 'me.earth.headlessmc'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven { // TODO: AHHHHHHHHHHHHHH we need something
+        name = "jitpack.io"
+        url = "https://jitpack.io"
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileJava {
+    if (JavaVersion.current().ordinal()
+            > JavaVersion.VERSION_1_8.ordinal()) {
+        options.compilerArgs.addAll(['--release', '8'])
+    }
+}
+
+dependencies {
+    implementation ('com.github.3arthqu4ke:HeadlessMc:1.0.0a') {
+        exclude module: 'headlessmc-launcher'
+        exclude module: 'headlessmc-lwjgl'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
