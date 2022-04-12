@@ -10,7 +10,7 @@ import org.spongepowered.tools.obfuscation.mcp.ObfuscationServiceMCP;
 import java.io.IOException;
 
 @SuppressWarnings("unused")
-public class HeadlessMcMcTweaker extends SimpleTweaker {
+public class HeadlessMcTweaker extends SimpleTweaker {
     @Override
     public void injectIntoClassLoader(LaunchClassLoader classLoader) {
         super.injectIntoClassLoader(classLoader);

@@ -1,6 +1,6 @@
 {
-    "pack": {
-        "description": "HeadlessMc resources",
-        "pack_format": 3
-    }
+  "pack": {
+    "description": "headlessmc",
+    "pack_format": 5
+  }
 }

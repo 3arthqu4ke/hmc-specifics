@@ -1,2 +1,17 @@
-rootProject.name = 'HMC-Specifics'
+pluginManagement {
+    repositories {
+        maven {
+            url "https://maven.architectury.dev/"
+        }
+        maven {
+            url = 'https://maven.fabricmc.net/'
+        }
+        maven {
+            name = 'forge'
+            url = 'https://files.minecraftforge.net/maven'
+        }
+        mavenCentral()
+    }
+}
 
+rootProject.name = 'HMC-Specifics'

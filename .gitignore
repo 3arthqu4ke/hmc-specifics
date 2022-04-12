@@ -23,3 +23,5 @@ run
 
 # HeadlessMC
 /HeadlessMC/
+/.vscode/
+/logs/
