@@ -8,6 +8,7 @@ import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.gui.TextField;
 import me.earth.headlessmc.mc.util.ExtendedTable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -22,15 +23,26 @@ public class GuiCommand extends AbstractGuiCommand
     protected void execute(GuiScreen gui, String... args) {
         List<GuiButton> guiButtons = gui.getButtons();
         guiButtons.sort(Comparator.comparingInt(GuiElement::getId));
+
         List<TextField> textFields = gui.getTextFields();
         textFields.sort(Comparator.comparingInt(GuiElement::getId));
         boolean verbose = Arrays.asList(args).contains("-v");
+
+        List<GuiElement> all = new ArrayList<>(gui.getAllElements());
+        all.removeAll(guiButtons);
+        all.removeAll(textFields);
+        all.sort(Comparator.comparingInt(GuiElement::getId));
+
         ctx.log(String.format(
             "Screen: %s\nButtons:\n%s\nTextFields:\n%s",
             gui.getHandle().getClass().getName(),
             table(guiButtons, verbose)
                 .insert("on", "type", g -> g.isEnabled() ? "1" : "0").build(),
             table(textFields, verbose).build()));
+        
+        if (!all.isEmpty()) {
+            ctx.log("Other:\n" + table(all, verbose));
+        }
     }
 
     private <T extends GuiElement> ExtendedTable<T> table(Iterable<T> elements,
