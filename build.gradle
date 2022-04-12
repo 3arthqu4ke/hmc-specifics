@@ -36,7 +36,7 @@ mainClassName = MAIN_CLASS
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'me.earth.headlessmc'
-version '1.12.2-b1'
+version '1.12.2-b2'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8

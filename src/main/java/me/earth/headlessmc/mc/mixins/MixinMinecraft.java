@@ -1,6 +1,7 @@
 package me.earth.headlessmc.mc.mixins;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import me.earth.headlessmc.mc.FontRendererImpl;
 import me.earth.headlessmc.mc.Initializer;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.gui.FontRenderer;
@@ -23,8 +24,6 @@ public abstract class MixinMinecraft implements Minecraft {
     public EntityPlayerSP player;
     @Shadow
     public net.minecraft.client.gui.GuiScreen currentScreen;
-    @Shadow
-    public net.minecraft.client.gui.FontRenderer fontRenderer;
 
     @Shadow
     public abstract void shutdown();
@@ -55,7 +54,7 @@ public abstract class MixinMinecraft implements Minecraft {
 
     @Override
     public FontRenderer getFontRenderer() {
-        return (FontRenderer) fontRenderer;
+        return FontRendererImpl.INSTANCE;
     }
 
     @Override
