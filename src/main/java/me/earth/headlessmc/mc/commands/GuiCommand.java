@@ -41,7 +41,7 @@ public class GuiCommand extends AbstractGuiCommand
             table(textFields, verbose).build()));
         
         if (!all.isEmpty()) {
-            ctx.log("Other:\n" + table(all, verbose));
+            ctx.log("Other:\n" + table(all, verbose).build());
         }
     }
 
