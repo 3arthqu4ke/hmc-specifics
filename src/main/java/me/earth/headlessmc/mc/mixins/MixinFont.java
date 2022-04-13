@@ -8,7 +8,6 @@ import net.minecraft.util.FormattedCharSequence;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(net.minecraft.client.gui.Font.class)
@@ -27,18 +26,8 @@ public abstract class MixinFont {
             CharSinkUtil.toString(sequence), x, y);
     }
 
-    @Inject(method = "drawInBatch8xOutline", at = @At("HEAD"))
-    private void drawInBatch8xOutlineHook(FormattedCharSequence sequence,
-                                          float x, float y, int i, int j,
-                                          Matrix4f matrix4f,
-                                          MultiBufferSource multiBufferSource,
-                                          int k, CallbackInfo ci) {
-        FontRendererImpl.INSTANCE.onRender(
-            CharSinkUtil.toString(sequence), x, y);
-    }
-
-    @Inject(method = "renderText(Ljava/lang/String;" +
-        "FFIZLcom/mojang/math/Matrix4f;" +
+    @Inject(method = "renderText(Ljava/lang/String;FFIZ" +
+        "Lcom/mojang/math/Matrix4f;" +
         "Lnet/minecraft/client/renderer/MultiBufferSource;ZII)F",
         at = @At("HEAD"))
     private void renderTextHook1(String string, float x, float y, int i,

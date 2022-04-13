@@ -24,7 +24,7 @@ import java.util.*;
 public abstract class MixinScreen implements GuiScreen, GuiEventListener {
     @Final
     @Shadow
-    private List<AbstractWidget> renderables;
+    private List<AbstractWidget> buttons;
 
     @Override
     public void click(int x, int y, int button) {
@@ -33,13 +33,13 @@ public abstract class MixinScreen implements GuiScreen, GuiEventListener {
 
     @Override
     public List<GuiButton> getButtons() {
-        Set<GuiButton> buttons = new LinkedHashSet<>();
-        renderables.stream()
-                   .filter(GuiButton.class::isInstance)
-                   .map(GuiButton.class::cast)
-                   .forEach(buttons::add);
-        buttons.addAll(findAll(GuiButton.class));
-        return new ArrayList<>(buttons);
+        Set<GuiButton> result = new LinkedHashSet<>();
+        this.buttons.stream()
+                    .filter(GuiButton.class::isInstance)
+                    .map(GuiButton.class::cast)
+                    .forEach(result::add);
+        result.addAll(findAll(GuiButton.class));
+        return new ArrayList<>(result);
     }
 
     @Override
@@ -50,10 +50,10 @@ public abstract class MixinScreen implements GuiScreen, GuiEventListener {
     @Override
     public List<GuiElement> getAllElements() {
         Set<GuiElement> result = new LinkedHashSet<>();
-        renderables.stream()
-                   .filter(GuiElement.class::isInstance)
-                   .map(GuiElement.class::cast)
-                   .forEach(result::add);
+        this.buttons.stream()
+                    .filter(GuiElement.class::isInstance)
+                    .map(GuiElement.class::cast)
+                    .forEach(result::add);
         result.addAll(findAll(GuiElement.class));
         return new ArrayList<>(result);
     }

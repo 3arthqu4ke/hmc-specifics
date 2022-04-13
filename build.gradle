@@ -5,11 +5,8 @@ plugins {
 }
 
 archivesBaseName  = 'hmc-specifics'
-version = '1.18.2-b1'
+version = '1.16.5-b1'
 group = 'me.earth.headlessmc'
-
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
 
 def type = project.property('build_type').toString()
 assert type.equalsIgnoreCase('official')
@@ -41,7 +38,6 @@ sourceSets {
     }
 }
 
-
 repositories {
     maven {
         name = 'impactdevelopment-repo'
@@ -62,12 +58,12 @@ configurations {
 
 dependencies {
     if (type.equalsIgnoreCase("forge")) {
-        forge "net.minecraftforge:forge:1.18.2-40.0.45"
+        forge "net.minecraftforge:forge:1.16.5-36.2.20"
     }
     mappings loom.layered() {
         officialMojangMappings()
     }
-    minecraft "com.mojang:minecraft:1.18.2"
+    minecraft "com.mojang:minecraft:1.16.5"
     if (!type.equalsIgnoreCase("forge")) {
         modImplementation "net.fabricmc:fabric-loader:0.13.1"
     }
@@ -101,7 +97,7 @@ test {
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     if (JavaVersion.current().isJava9Compatible()) {
-        it.options.release.set(16)
+        it.options.release.set(8)
     }
 }
 
