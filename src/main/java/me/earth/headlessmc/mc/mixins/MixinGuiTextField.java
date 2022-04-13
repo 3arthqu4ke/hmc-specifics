@@ -3,6 +3,7 @@ package me.earth.headlessmc.mc.mixins;
 import me.earth.headlessmc.mc.gui.TextField;
 import net.minecraft.client.gui.GuiTextField;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
@@ -12,16 +13,18 @@ public abstract class MixinGuiTextField implements TextField {
     @Invoker("getText")
     public abstract String getText();
 
+    // TODO: this is a problem when starting the game in an IDE, because the
+    //  methods deobfuscated name is setText as well we get a Stackoverflow.
     @Override
     @Invoker("setText")
     public abstract void setText(String text);
 
     @Override
-    @Accessor("x")
+    @Accessor("xPosition")
     public abstract int getX();
 
     @Override
-    @Accessor("y")
+    @Accessor("yPosition")
     public abstract int getY();
 
     @Override

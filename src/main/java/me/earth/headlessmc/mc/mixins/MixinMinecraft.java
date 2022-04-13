@@ -21,7 +21,7 @@ import java.util.concurrent.Future;
 @Mixin(net.minecraft.client.Minecraft.class)
 public abstract class MixinMinecraft implements Minecraft {
     @Shadow
-    public EntityPlayerSP player;
+    public EntityPlayerSP thePlayer;
     @Shadow
     public net.minecraft.client.gui.GuiScreen currentScreen;
 
@@ -39,7 +39,7 @@ public abstract class MixinMinecraft implements Minecraft {
 
     @Override
     public Player getPlayer() {
-        return (Player) player;
+        return (Player) thePlayer;
     }
 
     @Override

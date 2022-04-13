@@ -2,14 +2,10 @@ package me.earth.headlessmc.mc.mixins;
 
 import me.earth.headlessmc.mc.FontRendererImpl;
 import me.earth.headlessmc.mc.gui.FontRenderer;
-import me.earth.headlessmc.mc.gui.FontRendererListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Mixin(net.minecraft.client.gui.FontRenderer.class)
 public abstract class MixinFontRenderer implements FontRenderer {

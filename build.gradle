@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        //noinspection JCenterRepository
         mavenCentral()
         maven {
             name = 'forge'
@@ -16,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
@@ -26,7 +25,6 @@ apply plugin: 'net.minecraftforge.gradle.tweaker-client'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'eclipse'
 
 // This needs to happen before the ShadowJar plugin
 apply plugin: 'application'
@@ -35,16 +33,17 @@ mainClassName = MAIN_CLASS
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
-group 'me.earth.headlessmc'
-version '1.12.2-b2'
+version = '1.8.9-b1'
+group= 'me.earth.headlessmc'
+archivesBaseName = 'headlessmc'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 minecraft {
-    version = '1.12.2'
+    version = '1.8.9'
     runDir = 'run'
-    mappings = 'stable_39'
+    mappings = 'stable_20'
     makeObfSourceJar = false
     tweakClass = 'me.earth.headlessmc.mc.tweaker.HeadlessMcMcTweaker'
 }
@@ -66,7 +65,6 @@ repositories {
     }
 
     mavenCentral()
-    google()
 }
 
 dependencies {
@@ -82,24 +80,22 @@ dependencies {
     }
 }
 
-task getDeps(type: Copy) {
-    from sourceSets.main.runtimeClasspath
-    into 'runtime/'
+runClient {
+    standardInput = System.in
 }
 
 processResources {
     inputs.property 'version', project.version
     inputs.property 'mcversion', project.minecraft.version
+
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-
-    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 shadowJar {
@@ -135,10 +131,10 @@ reobf {
 jar {
     manifest {
         attributes(
-            'Manifest-Version': 1.0,
-            'TweakClass': 'me.earth.headlessmc.mc.tweaker.HeadlessMcMcTweaker',
-            'TweakOrder': -999,
-            'Main-Class': MAIN_CLASS
+                'Manifest-Version': 1.0,
+                'TweakClass': 'me.earth.headlessmc.mc.tweaker.HeadlessMcMcTweaker',
+                'TweakOrder': -999,
+                'Main-Class': MAIN_CLASS
         )
     }
 }

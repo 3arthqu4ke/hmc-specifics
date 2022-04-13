@@ -22,7 +22,8 @@ public class HeadlessMcMcTweaker extends SimpleTweaker {
                 "net.minecraftforge.common.ForgeHooks") != null) {
                 obfCtx = ObfuscationServiceMCP.SEARGE;
             }
-        } catch (IOException ignored) { }
+        } catch (IOException ignored) {
+        }
 
         MixinEnvironment.getDefaultEnvironment()
                         .setSide(MixinEnvironment.Side.CLIENT);

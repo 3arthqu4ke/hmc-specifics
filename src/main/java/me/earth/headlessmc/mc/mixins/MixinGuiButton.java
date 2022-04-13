@@ -19,11 +19,11 @@ public abstract class MixinGuiButton implements GuiButton {
     public abstract String getText();
 
     @Override
-    @Accessor("x")
+    @Accessor("xPosition")
     public abstract int getX();
 
     @Override
-    @Accessor("y")
+    @Accessor("yPosition")
     public abstract int getY();
 
     @Override
