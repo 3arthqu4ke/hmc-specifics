@@ -5,17 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngameMenu;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP implements Player {
-    @Shadow
-    public abstract void sendChatMessage(String component);
-
     @Override
-    public void sendMessage(String message) {
-        this.sendChatMessage(message);
-    }
+    @Invoker("sendChatMessage")
+    public abstract void sendMessage(String message);
 
     @Override
     public void openMenu() {
