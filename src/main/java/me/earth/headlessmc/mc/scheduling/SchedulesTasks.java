@@ -8,6 +8,7 @@ import java.util.function.Supplier;
  * In an environment with a main thread this type allows you to schedule tasks
  * on that thread, from other threads.
  */
+@FunctionalInterface
 public interface SchedulesTasks {
     /**
      * Schedules the given task to run on the main thread. If the Thread this
