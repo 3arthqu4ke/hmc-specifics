@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'dev.architectury.loom' version '0.10.0-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '0.12.0.282' apply false
     id 'maven-publish'
 }
 
 archivesBaseName  = 'hmc-specifics'
-version = '1.18.2-b1'
+version = '1.19-b1'
 group = 'me.earth.headlessmc'
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -62,12 +62,12 @@ configurations {
 
 dependencies {
     if (type.equalsIgnoreCase("forge")) {
-        forge "net.minecraftforge:forge:1.18.2-40.0.45"
+        forge "net.minecraftforge:forge:1.19-41.0.17"
     }
     mappings loom.layered() {
         officialMojangMappings()
     }
-    minecraft "com.mojang:minecraft:1.18.2"
+    minecraft "com.mojang:minecraft:1.19"
     if (!type.equalsIgnoreCase("forge")) {
         modImplementation "net.fabricmc:fabric-loader:0.13.1"
     }
@@ -140,6 +140,7 @@ remapJar {
 
 if (type.equalsIgnoreCase("official")) {
     remapJar {
-        toM.set "official"
+        // TODO: fix
+        // toM.set "official"
     }
 }
