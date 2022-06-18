@@ -13,3 +13,5 @@ The easiest way is probably to just launch it with HeadlessMc.
 | quit | Quits the game. | |
 | render | Dumps all strings rendered by Minecrafts FontRenderer. | \<time\> -f -t |
 | close | Closes the menu if ingame. | |
+
+You can find a good example on how to use these commands [here](https://github.com/3arthqu4ke/HeadlessMc/issues/8#issuecomment-1159378478).
