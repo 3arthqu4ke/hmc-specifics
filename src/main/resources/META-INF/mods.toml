@@ -34,6 +34,6 @@ credits=" - " #optional
 authors="3arthqu4ke" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-1.19 implementation of the HeadlessMc runtime.
+1.19.2 implementation of the HeadlessMc runtime.
 '''
 

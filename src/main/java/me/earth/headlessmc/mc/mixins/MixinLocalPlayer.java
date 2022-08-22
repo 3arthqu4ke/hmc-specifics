@@ -3,17 +3,26 @@ package me.earth.headlessmc.mc.mixins;
 import me.earth.headlessmc.mc.player.Player;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(LocalPlayer.class)
 public abstract class MixinLocalPlayer implements Player {
     @Shadow
-    public abstract void chat(String component);
+    public abstract void commandSigned(String string, Component arg);
+
+    @Shadow
+    public abstract void chatSigned(String string, Component arg);
 
     @Override
     public void sendMessage(String message) {
-        this.chat(message);
+        // TODO: component?
+        if (message.startsWith("/")) {
+            this.commandSigned(message.substring(1), null);
+        } else {
+            this.chatSigned(message, null);
+        }
     }
 
     @Override

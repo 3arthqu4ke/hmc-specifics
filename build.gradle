@@ -5,7 +5,7 @@ plugins {
 }
 
 archivesBaseName  = 'hmc-specifics'
-version = '1.19-b1'
+version = '1.19.2'
 group = 'me.earth.headlessmc'
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -44,11 +44,6 @@ sourceSets {
 
 repositories {
     maven {
-        name = 'impactdevelopment-repo'
-        url = 'https://impactdevelopment.github.io/maven/'
-    }
-
-    maven {
         name = "jitpack.io"
         url  = "https://jitpack.io"
     }
@@ -62,14 +57,14 @@ configurations {
 
 dependencies {
     if (type.equalsIgnoreCase("forge")) {
-        forge "net.minecraftforge:forge:1.19-41.0.17"
+        forge "net.minecraftforge:forge:1.19.2-43.1.2"
     }
     mappings loom.layered() {
         officialMojangMappings()
     }
-    minecraft "com.mojang:minecraft:1.19"
+    minecraft "com.mojang:minecraft:1.19.2"
     if (!type.equalsIgnoreCase("forge")) {
-        modImplementation "net.fabricmc:fabric-loader:0.13.1"
+        modImplementation "net.fabricmc:fabric-loader:0.14.9"
     }
 
     // TODO: I was stupid and too lazy to fix
@@ -82,14 +77,9 @@ dependencies {
         exclude module: 'headlessmc-launcher'
         exclude module: 'headlessmc-lwjgl'
     }
-    jarLibs 'com.github.ImpactDevelopment:SimpleTweaker:1.2'
-    implementation('net.minecraft:launchwrapper:1.12') {
-        exclude module: 'lwjgl'
-        exclude module: 'asm-debug-all'
-    }
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 
     implementation configurations.jarLibs
 }
@@ -127,7 +117,6 @@ jar {
         attributes(
             'MixinConfigs': 'mixins.headlessmc.json',
             'MixinConnector': 'me.earth.headlessmc.mc.tweaker.HeadlessMcMixinConnector',
-            'TweakClass': 'me.earth.headlessmc.mc.tweaker.HeadlessMcMcTweaker',
             'Implementation-Title': 'HeadlessMc',
             'Implementation-Version': project.version,
         )
