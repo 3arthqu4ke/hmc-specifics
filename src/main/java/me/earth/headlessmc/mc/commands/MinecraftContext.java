@@ -1,18 +1,18 @@
 package me.earth.headlessmc.mc.commands;
 
+import me.earth.headlessmc.api.HeadlessMc;
 import me.earth.headlessmc.api.command.Command;
 import me.earth.headlessmc.command.CommandContextImpl;
 import me.earth.headlessmc.command.HelpCommand;
 import me.earth.headlessmc.command.MemoryCommand;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.SpecificProperties;
-import me.earth.headlessmc.runtime.Runtime;
 import me.earth.headlessmc.runtime.commands.RuntimeQuitCommand;
 
 public class MinecraftContext extends CommandContextImpl {
     protected final Minecraft mc;
 
-    public MinecraftContext(Runtime ctx, Minecraft mc) {
+    public MinecraftContext(HeadlessMc ctx, Minecraft mc) {
         super(ctx);
         this.mc = mc;
         add(new QuitCommand(ctx, mc));
@@ -25,6 +25,8 @@ public class MinecraftContext extends CommandContextImpl {
         add(new CloseCommand(ctx, mc));
         add(new MenuCommand(ctx, mc));
         add(new MemoryCommand(ctx));
+        add(new ConnectCommand(ctx, mc));
+        add(new DisconnectCommand(ctx, mc));
         if (ctx.getConfig().get(
             SpecificProperties.KEEP_RUNTIME_COMMANDS, false)) {
             for (Command command : ctx.getCommandContext()) {

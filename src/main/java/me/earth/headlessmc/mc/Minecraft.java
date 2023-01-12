@@ -36,4 +36,17 @@ public interface Minecraft extends SchedulesTasks, Adapter {
      */
     FontRenderer getFontRenderer();
 
+    /**
+     * Connects you to the server with the given Ip and port.
+     *
+     * @param ip the ip of the server to connect to.
+     * @param port the port of the server to connect to.
+     */
+    void connect(String ip, int port);
+
+    /**
+     * Disconnects you if you are connected to a server.
+     */
+    void disconnect();
+
 }
