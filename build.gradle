@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'me.earth.headlessmc'
-version '1.0.0'
+version '1.1.0'
 
 repositories {
     mavenCentral()
@@ -24,12 +24,14 @@ compileJava {
 }
 
 dependencies {
-    implementation ('com.github.3arthqu4ke:HeadlessMc:1.0.0a') {
+    implementation ('com.github.3arthqu4ke:HeadlessMc:1.5.2') {
         exclude module: 'headlessmc-launcher'
         exclude module: 'headlessmc-lwjgl'
     }
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    testImplementation('com.github.3arthqu4ke.HeadlessMc:headlessmc-commons:1.5.2:test-fixtures')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
 
 test {
