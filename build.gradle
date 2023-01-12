@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'dev.architectury.loom' version '0.12.0.282' apply false
+    id 'dev.architectury.loom' version '1.0.308' apply false
     id 'maven-publish'
 }
 
 archivesBaseName  = 'hmc-specifics'
-version = '1.19.2'
+version = '1.19.3'
 group = 'me.earth.headlessmc'
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -57,29 +57,29 @@ configurations {
 
 dependencies {
     if (type.equalsIgnoreCase("forge")) {
-        forge "net.minecraftforge:forge:1.19.2-43.1.2"
+        forge "net.minecraftforge:forge:1.19.3-44.1.5"
     }
     mappings loom.layered() {
         officialMojangMappings()
     }
-    minecraft "com.mojang:minecraft:1.19.2"
+    minecraft "com.mojang:minecraft:1.19.3"
     if (!type.equalsIgnoreCase("forge")) {
-        modImplementation "net.fabricmc:fabric-loader:0.14.9"
+        modImplementation "net.fabricmc:fabric-loader:0.14.12"
     }
 
     // TODO: I was stupid and too lazy to fix
-    jarLibs('com.github.3arthqu4ke:HMC-Specifics:' +
-            'ccb2fb485090fce00610e94490d947e9706c721f') {
-        exclude module: 'headlessmc-launcher'
-        exclude module: 'headlessmc-lwjgl'
-    }
-    jarLibs('com.github.3arthqu4ke:HeadlessMc:1.0.0a') {
+    jarLibs('com.github.3arthqu4ke:HMC-Specifics:1.1.0') {
         exclude module: 'headlessmc-launcher'
         exclude module: 'headlessmc-lwjgl'
     }
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    jarLibs('com.github.3arthqu4ke:HeadlessMc:1.5.2') {
+        exclude module: 'headlessmc-launcher'
+        exclude module: 'headlessmc-lwjgl'
+    }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 
     implementation configurations.jarLibs
 }

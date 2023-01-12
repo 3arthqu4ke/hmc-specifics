@@ -2,26 +2,36 @@ package me.earth.headlessmc.mc.mixins;
 
 import me.earth.headlessmc.mc.player.Player;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(LocalPlayer.class)
 public abstract class MixinLocalPlayer implements Player {
     @Shadow
-    public abstract void commandSigned(String string, Component arg);
-
-    @Shadow
-    public abstract void chatSigned(String string, Component arg);
+    @Final
+    public ClientPacketListener connection;
 
     @Override
     public void sendMessage(String message) {
-        // TODO: component?
-        if (message.startsWith("/")) {
-            this.commandSigned(message.substring(1), null);
+        if (message == null || connection == null) {
+            return;
+        }
+
+        String normalized = StringUtil.trimChatMessage(
+            StringUtils.normalizeSpace(message.trim()));
+        if (normalized.isEmpty()) {
+            return;
+        }
+
+        if (normalized.startsWith("/")) {
+            connection.sendCommand(normalized.substring(1));
         } else {
-            this.chatSigned(message, null);
+            connection.sendChat(normalized);
         }
     }
 

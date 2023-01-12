@@ -27,4 +27,8 @@ public enum FontRendererImpl implements FontRenderer, FontRendererListener {
         listeners.forEach(l -> l.onRender(text, x, y));
     }
 
+    public boolean hasListeners() {
+        return !listeners.isEmpty();
+    }
+
 }

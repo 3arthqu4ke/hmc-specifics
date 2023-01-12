@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "headlessmc",
-  "version": "1.19.2",
+  "version": "1.19.3",
   "name": "HeadlessMc",
-  "description": "1.19.2 implementation of the HeadlessMc runtime",
+  "description": "1.19.3 implementation of the HeadlessMc runtime",
   "authors": [ "3arthqu4ke"],
   "license": "MIT",
   "environment": "*",
