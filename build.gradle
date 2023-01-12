@@ -36,7 +36,7 @@ mainClassName = MAIN_CLASS
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'me.earth.headlessmc'
-version '1.12.2-b2'
+version '1.12.2-b3'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -70,10 +70,11 @@ repositories {
 }
 
 dependencies {
-    compile('com.github.3arthqu4ke:HMC-Specifics:1.0.0')
+    compile('com.github.3arthqu4ke:HMC-Specifics:1.1.0')
     compile('com.github.ImpactDevelopment:SimpleTweaker:1.2') {
         exclude module: 'launchwrapper'
     }
+
     compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
@@ -110,9 +111,9 @@ shadowJar {
         //noinspection GroovyAssignabilityCheck
         include(dependency('com.github.ImpactDevelopment:SimpleTweaker'))
         include(dependency('com.github.3arthqu4ke:HMC-Specifics'))
-        include(dependency('com.github.3arthqu4ke.HeadlessMc:headlessmc-api:1.0.0a'))
-        include(dependency('com.github.3arthqu4ke.HeadlessMc:headlessmc-commons:1.0.0a'))
-        include(dependency('com.github.3arthqu4ke.HeadlessMc:headlessmc-runtime:1.0.0a'))
+        include(dependency('com.github.3arthqu4ke.HeadlessMc:headlessmc-api:1.5.2'))
+        include(dependency('com.github.3arthqu4ke.HeadlessMc:headlessmc-commons:1.5.2'))
+        include(dependency('com.github.3arthqu4ke.HeadlessMc:headlessmc-runtime:1.5.2'))
     }
 
     exclude 'dummyThing'
