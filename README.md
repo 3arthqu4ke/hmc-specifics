@@ -1,7 +1,7 @@
 ## HMC-Specifics
 Version specific implementations of the [HeadlessMc](https://github.com/3arthqu4ke/HeadlessMc) runtime. Just place the
 jar for your version in your mods folder. Then you need to find a way to send commands to your running Minecraft game.
-The easiest way is probably to just launch it with HeadlessMc.
+The easiest way is probably to just launch it with HeadlessMc. The `-commands` flag is not required for HeadlessMc in that case.
 
 | Name        | Description | Args/Flags  |
 | ----------- | ----------- | ----------- |
@@ -13,5 +13,7 @@ The easiest way is probably to just launch it with HeadlessMc.
 | quit | Quits the game. | |
 | render | Dumps all strings rendered by Minecrafts FontRenderer. | \<time\> -f -t |
 | close | Closes the menu if ingame. | |
+| connect | Connects you to a server. | \<ip\> \<port\> |
+| disconnect | Disconnects you from a server. | |
 
 You can find a good example on how to use these commands [here](https://github.com/3arthqu4ke/HeadlessMc/issues/8#issuecomment-1159378478).
