@@ -8,7 +8,7 @@ public interface GuiButton extends GuiElement {
      * A GuiButton can be enabled or disabled, if it's disabled it can't be
      * clicked.
      *
-     * @return <tt>true</tt> if the GuiButton represented by this object is
+     * @return {@code true} if the GuiButton represented by this object is
      * enabled.
      */
     boolean isEnabled();

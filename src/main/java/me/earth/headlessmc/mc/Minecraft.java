@@ -12,14 +12,14 @@ public interface Minecraft extends SchedulesTasks, Adapter {
     /**
      * Returns the Minecraft player.
      *
-     * @return a {@link Player} or <tt>null</tt> if we are currently not ingame.
+     * @return a {@link Player} or {@code null} if we are currently not ingame.
      */
     Player getPlayer();
 
     /**
      * Retrieves the current {@link GuiScreen} Minecraft is displaying.
      *
-     * @return the current GuiScreen or <tt>null</tt> if there's no GuiScreen.
+     * @return the current GuiScreen or {@code null} if there's no GuiScreen.
      */
     GuiScreen getScreen();
 
