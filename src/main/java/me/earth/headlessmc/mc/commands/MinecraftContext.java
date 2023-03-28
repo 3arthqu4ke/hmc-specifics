@@ -40,7 +40,7 @@ public class MinecraftContext extends CommandContextImpl {
     @Override
     protected void executeCommand(Command cmd, String... args) {
         if (cmd instanceof ScheduledCommand) {
-            mc.schedule(() -> super.executeCommand(cmd, args));
+            mc.scheduleEx(() -> super.executeCommand(cmd, args));
         } else {
             super.executeCommand(cmd, args);
         }

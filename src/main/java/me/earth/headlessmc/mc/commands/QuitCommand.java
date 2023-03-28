@@ -21,7 +21,7 @@ public class QuitCommand extends AbstractMinecraftCommand {
             ctx.log("Quitting Minecraft...");
             mc.quit();
         } else {
-            mc.schedule(() -> {
+            mc.scheduleEx(() -> {
                 ctx.log("Quitting Minecraft...");
                 mc.quit();
             });
