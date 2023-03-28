@@ -94,3 +94,38 @@ subprojects {
         classifier null
     }
 }
+
+allprojects {
+    publishing {
+        publications {
+            "${project.name.toLowerCase()}"(MavenPublication) {
+                ((MavenPublication) it).groupId "${project.group}"
+                ((MavenPublication) it).artifactId "${project.archivesBaseName.toLowerCase()}"
+                ((MavenPublication) it).version "${project.version}"
+                from components.java
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'BuildDirMaven'
+                url = rootProject.layout.buildDirectory.dir('maven')
+            }
+
+            if (System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL') != null) {
+                maven {
+                    name = 'GithubPagesMaven'
+                    url = System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL')
+                    credentials {
+                        username = System.getenv('GITHUB_USER')
+                        password = System.getenv('GITHUB_TOKEN')
+                    }
+                }
+            }
+        }
+    }
+
+    publish {
+        dependsOn(build)
+    }
+}
