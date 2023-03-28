@@ -1,0 +1,15 @@
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+configurations {
+    developmentFabric.extendsFrom common
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_version"
+    common "me.earth.headlessmc:hmc-specifics-api:$rootProject.specifics_version"
+    common project(path: ':', configuration: 'namedElements')
+    jarLibs(project(path: ':', configuration: 'transformProductionFabric'))
+}

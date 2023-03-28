@@ -1,17 +1,23 @@
 pluginManagement {
     repositories {
         maven {
+            name 'ArchitecturyMaven'
             url "https://maven.architectury.dev/"
         }
         maven {
+            name 'FabricMaven'
             url = 'https://maven.fabricmc.net/'
         }
         maven {
-            name = 'forge'
+            name = 'ForgeMaven'
             url = 'https://files.minecraftforge.net/maven'
         }
+
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
-rootProject.name = 'HMC-Specifics'
+rootProject.name = 'hmc-specifics'
+include("fabric")
+include("forge")

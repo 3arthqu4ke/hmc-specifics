@@ -1,135 +1,96 @@
 plugins {
-    id 'java'
-    id 'dev.architectury.loom' version '1.0.308' apply false
-    id 'maven-publish'
+    id 'dev.architectury.loom' version '1.1.324' apply false
+    id 'com.github.johnrengelman.shadow' version '7.0.0' apply false
+    id 'architectury-plugin' version '3.4.145' apply false
 }
 
-archivesBaseName  = 'hmc-specifics'
-version = '1.19.3'
-group = 'me.earth.headlessmc'
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'maven-publish'
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+    archivesBaseName  = 'hmc-specifics'
+    version = "$rootProject.mc_version-$rootProject.project_version"
+    group = 'me.earth.headlessmc'
 
-def type = project.property('build_type').toString()
-assert type.equalsIgnoreCase('official')
-        || type.equalsIgnoreCase('fabric')
-        || type.equalsIgnoreCase('forge'),
-        'build_type must be one of fabric, forge, official!'
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
-if (type.equalsIgnoreCase('forge')) {
-    project.ext.'loom.platform' = 'FORGE'
-} else {
-    project.ext.'loom.platform' = 'FABRIC'
-}
-
-apply plugin: 'dev.architectury.loom'
-
-loom {
-    if (type.equalsIgnoreCase("forge")) {
-        forge {
-            mixinConfig 'mixins.headlessmc.json'
-        }
-    }
-    mixin.defaultRefmapName = "mixins.headlessmc.refmap.json"
-}
-
-sourceSets {
-    if (!type.equalsIgnoreCase("forge")) {
-        mock { }
-        sourceSets.main.compileClasspath += mock.output
-    }
-}
-
-
-repositories {
-    maven {
-        name = "jitpack.io"
-        url  = "https://jitpack.io"
+    loom {
+        silentMojangMappingsLicense()
+        mixin.defaultRefmapName = 'mixins.headlessmc.refmap.json'
     }
 
-    mavenCentral()
-}
-
-configurations {
-    jarLibs
-}
-
-dependencies {
-    if (type.equalsIgnoreCase("forge")) {
-        forge "net.minecraftforge:forge:1.19.3-44.1.5"
-    }
-    mappings loom.layered() {
-        officialMojangMappings()
-    }
-    minecraft "com.mojang:minecraft:1.19.3"
-    if (!type.equalsIgnoreCase("forge")) {
-        modImplementation "net.fabricmc:fabric-loader:0.14.12"
-    }
-
-    // TODO: I was stupid and too lazy to fix
-    jarLibs('com.github.3arthqu4ke:HMC-Specifics:1.1.0') {
-        exclude module: 'headlessmc-launcher'
-        exclude module: 'headlessmc-lwjgl'
-    }
-
-    jarLibs('com.github.3arthqu4ke:HeadlessMc:1.5.2') {
-        exclude module: 'headlessmc-launcher'
-        exclude module: 'headlessmc-lwjgl'
-    }
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-
-    implementation configurations.jarLibs
-}
-
-test {
-    useJUnitPlatform()
-}
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    if (JavaVersion.current().isJava9Compatible()) {
-        it.options.release.set(16)
-    }
-}
-
-jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from {
-        configurations.jarLibs.collect {
-            it.isDirectory() ? it : zipTree(it)
+    repositories {
+        mavenCentral()
+        maven {
+            name '3arthMaven'
+            url 'https://3arthqu4ke.github.io/maven'
         }
     }
 
-    if (!type.equalsIgnoreCase("forge")) {
-        exclude "**/HeadlessMcForgeMod.class"
-        exclude "**/mods.toml"
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.mc_version}"
+        mappings loom.officialMojangMappings()
+
+        api "me.earth.headlessmc:hmc-specifics-api:$rootProject.specifics_version"
+        api "me.earth.headlessmc:headlessmc-runtime:$rootProject.hmc_version"
+        compileOnly 'org.spongepowered:mixin:0.8.5'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
     }
 
-    if (!type.equalsIgnoreCase("fabric")) {
-        exclude("fabric.mod.json")
+    test {
+        useJUnitPlatform()
     }
 
-    //noinspection GroovyAssignabilityCheck
-    manifest {
-        attributes(
-            'MixinConfigs': 'mixins.headlessmc.json',
-            'MixinConnector': 'me.earth.headlessmc.mc.tweaker.HeadlessMcMixinConnector',
-            'Implementation-Title': 'HeadlessMc',
-            'Implementation-Version': project.version,
-        )
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        if (JavaVersion.current().isJava9Compatible()) {
+            it.options.release.set(17)
+        }
+    }
+
+    jar {
+        manifest {
+            attributes(
+                'MixinConfigs': 'mixins.headlessmc.json',
+                'MixinConnector': 'me.earth.headlessmc.specifics.HeadlessMcMixinConnector',
+                'Implementation-Title': 'HeadlessMc',
+                'Implementation-Version': project.version,
+            )
+        }
     }
 }
 
-remapJar {
-    classifier(type)
+architectury {
+    injectInjectables = false
+    common('forge', 'fabric')
 }
 
-if (type.equalsIgnoreCase("official")) {
+subprojects {
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    archivesBaseName  = "hmc-specifics-$project.name"
+
+    configurations {
+        jarLibs
+    }
+
+    dependencies {
+        jarLibs "me.earth.headlessmc:hmc-specifics-api:$rootProject.specifics_version"
+    }
+
+    shadowJar {
+        configurations = [project.configurations.jarLibs]
+        classifier 'dev-shadow'
+    }
+
     remapJar {
-        // TODO: fix
-        // toM.set "official"
+        inputFile.set shadowJar.archiveFile
+        dependsOn shadowJar
+        classifier null
     }
 }
