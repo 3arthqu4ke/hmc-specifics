@@ -1,11 +1,11 @@
 package me.earth.headlessmc.specifics.mixins;
 
-import me.earth.headlessmc.specifics.FontRendererImpl;
-import me.earth.headlessmc.specifics.Initializer;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
+import me.earth.headlessmc.specifics.FontRendererImpl;
+import me.earth.headlessmc.specifics.Initializer;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -78,7 +78,7 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         ConnectScreen.startConnecting(
             new TitleScreen(), net.minecraft.client.Minecraft.class.cast(this),
             address, new ServerData(I18n.get("selectServer.defaultName"),
-                                    address.toString(), false));
+                                    address.toString(), false), false);
     }
 
     @Override

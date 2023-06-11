@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "id": "headlessmc",
-  "version": "1.19.4",
+  "version": "1.20",
   "name": "HeadlessMc",
-  "description": "1.19.4 implementation of the HeadlessMc runtime",
+  "description": "1.20 implementation of the HeadlessMc runtime",
   "authors": [ "3arthqu4ke"],
   "license": "MIT",
   "environment": "*",
   "entrypoints": {},
   "mixins": ["mixins.headlessmc.json"],
-  "depends": { "fabricloader": ">=0.11.0", "minecraft": "1.19.4" }
+  "depends": { "fabricloader": ">=0.11.0", "minecraft": "1.20" }
 }

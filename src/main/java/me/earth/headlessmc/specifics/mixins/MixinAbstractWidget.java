@@ -1,7 +1,7 @@
 package me.earth.headlessmc.specifics.mixins;
 
-import me.earth.headlessmc.specifics.IdManager;
 import me.earth.headlessmc.mc.gui.GuiElement;
+import me.earth.headlessmc.specifics.IdManager;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
