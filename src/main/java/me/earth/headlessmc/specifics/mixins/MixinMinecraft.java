@@ -38,13 +38,11 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
     @Shadow
     public abstract void stop();
     @Shadow
-    public abstract void clearLevel(Screen arg);
-    @Shadow
-    public abstract void clearLevel();
-    @Shadow
     public abstract void setScreen(Screen arg);
     @Shadow
     public abstract boolean isLocalServer();
+    @Shadow
+    public abstract void clearClientLevel(Screen arg);
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(GameConfig config, CallbackInfo ci) throws IOException {
@@ -78,7 +76,7 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         ConnectScreen.startConnecting(
             new TitleScreen(), net.minecraft.client.Minecraft.class.cast(this),
             address, new ServerData(I18n.get("selectServer.defaultName"),
-                                    address.toString(), false), false);
+                                    address.toString(), ServerData.Type.OTHER), false);
     }
 
     @Override
@@ -89,10 +87,11 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         }
 
         if (this.isLocalServer()) {
-            this.clearLevel(new GenericDirtMessageScreen(
+            this.clearClientLevel(new GenericDirtMessageScreen(
                 Component.translatable("menu.savingLevel")));
         } else {
-            this.clearLevel();
+            this.clearClientLevel(new GenericDirtMessageScreen(
+                Component.translatable("multiplayer.disconnect.generic")));
         }
 
         this.setScreen(new TitleScreen());

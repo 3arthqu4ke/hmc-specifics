@@ -1,7 +1,7 @@
 plugins {
     id 'dev.architectury.loom' version '1.1.324' apply false
     id 'com.github.johnrengelman.shadow' version '7.0.0' apply false
-    id 'architectury-plugin' version '3.4.145' apply false
+    id 'architectury-plugin' version '3.4.151' apply false
 }
 
 allprojects {
