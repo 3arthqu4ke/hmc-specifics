@@ -4,9 +4,10 @@ plugins {
 }
 
 group 'me.earth.headlessmc'
-version '1.2.2'
+version '1.8.0'
 
 repositories {
+    // mavenLocal()
     mavenCentral()
     maven {
         name '3arthMaven'
@@ -29,9 +30,9 @@ java {
 }
 
 dependencies {
-    implementation 'me.earth.headlessmc:headlessmc-runtime:1.6.4'
+    implementation 'me.earth.headlessmc:headlessmc-runtime:1.8.0'
 
-    testImplementation('me.earth.headlessmc:headlessmc-commons:1.6.4:test-fixtures')
+    testImplementation('me.earth.headlessmc:headlessmc-commons:1.8.0:test-fixtures')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
