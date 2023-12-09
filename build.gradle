@@ -30,6 +30,10 @@ allprojects {
         }
     }
 
+    configurations {
+        lwjglAgent.extendsFrom runtimeOnly
+    }
+
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.mc_version}"
         mappings loom.officialMojangMappings()
@@ -37,6 +41,10 @@ allprojects {
         api "me.earth.headlessmc:hmc-specifics-api:$rootProject.specifics_version"
         api "me.earth.headlessmc:headlessmc-runtime:$rootProject.hmc_version"
         compileOnly 'org.spongepowered:mixin:0.8.5'
+
+        if (rootProject.property('hmc.lwjgl').toBoolean()) {
+            lwjglAgent "me.earth.headlessmc:headlessmc-lwjgl:$rootProject.hmc_version"
+        }
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
@@ -121,6 +129,17 @@ allprojects {
                         password = System.getenv('GITHUB_TOKEN')
                     }
                 }
+            }
+        }
+    }
+
+    afterEvaluate {
+        runClient {
+            dependsOn(rootProject.build)
+            if (rootProject.property('hmc.lwjgl').toBoolean()) {
+                jvmArgs += ["-javaagent:${configurations.lwjglAgent.files.iterator().next()}"]
+                systemProperties['joml.nounsafe'] = 'true'
+                systemProperties['fabric.systemLibraries'] = "${configurations.lwjglAgent.files.iterator().next()}"
             }
         }
     }
