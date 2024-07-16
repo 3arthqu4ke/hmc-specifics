@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[1,)"
+loaderVersion = "[4,)"
 issueTrackerURL = "https://github.com/3arthqu4ke/HMC-Specifics/issues"
 license = "MIT"
 
@@ -14,7 +14,7 @@ description = '''
 
 [[dependencies.headlessmc]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.21)"
+type="required"
+versionRange = "[1.21,1.21.1)"
 ordering = "NONE"
 side = "BOTH"
