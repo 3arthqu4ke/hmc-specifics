@@ -8,7 +8,7 @@ import me.earth.headlessmc.mc.player.Player;
 import me.earth.headlessmc.specifics.FontRendererImpl;
 import me.earth.headlessmc.specifics.Initializer;
 import net.minecraft.client.gui.screens.ConnectScreen;
-import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
+import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
@@ -78,7 +78,7 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         }
 
         if (localServer) {
-            disconnect(new GenericDirtMessageScreen(Component.literal("Saving level")));
+            disconnect(new GenericMessageScreen(Component.literal("Saving level")));
         } else {
             disconnect();
         }
@@ -105,7 +105,7 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         ConnectScreen.startConnecting(
             new TitleScreen(), net.minecraft.client.Minecraft.class.cast(this),
             address, new ServerData(I18n.get("selectServer.defaultName"),
-                                    address.toString(), ServerData.Type.OTHER), false);
+                                    address.toString(), ServerData.Type.OTHER), false, null);
     }
 
     @Override
@@ -116,10 +116,10 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         }
 
         if (this.isLocalServer()) {
-            this.clearClientLevel(new GenericDirtMessageScreen(
+            this.clearClientLevel(new GenericMessageScreen(
                 Component.translatable("menu.savingLevel")));
         } else {
-            this.clearClientLevel(new GenericDirtMessageScreen(
+            this.clearClientLevel(new GenericMessageScreen(
                 Component.translatable("multiplayer.disconnect.generic")));
         }
 
