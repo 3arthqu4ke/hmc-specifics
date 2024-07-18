@@ -1,4 +1,17 @@
-## HMC-Specifics
+<h1 align="center" style="font-weight: normal;"><b>HMC-Specifics</b></h1>
+<p align="center">Version specific implementations of the HeadlessMc runtime.</p>
+<p align="center"><a href="https://github.com/3arthqu4ke/mc-runtime-test">Mc-Runtime-Test</a> | <a href="https://github.com/3arthqu4ke/headlessmc">HMC</a> | HMC-Specifics | <a href="https://github.com/3arthqu4ke/hmc-optimizations">HMC-Optimizations</a></p>
+
+<div align="center">
+
+[![CodeFactor](https://www.codefactor.io/repository/github/3arthqu4ke/hmc-specifics/badge/main)](https://www.codefactor.io/repository/github/3arthqu4ke/hmc-specifics/overview/main)
+[![GitHub All Releases](https://img.shields.io/github/downloads/3arthqu4ke/hmc-specifics/total.svg)](https://github.com/3arthqu4ke/hmc-specifics/releases)
+![](https://github.com/3arthqu4ke/mc-runtime-test/actions/workflows/packages.yml/badge.svg)
+![GitHub](https://img.shields.io/github/license/3arthqu4ke/hmc-specifics)
+![Github last-commit](https://img.shields.io/github/last-commit/3arthqu4ke/hmc-specifics)
+
+</div>
+
 Version specific implementations of the [HeadlessMc](https://github.com/3arthqu4ke/HeadlessMc) runtime. Just place the
 jar for your version in your mods folder. Then you need to find a way to send commands to your running Minecraft game.
 The easiest way is probably to just launch it with HeadlessMc. The `-commands` flag is not required for HeadlessMc in that case.
