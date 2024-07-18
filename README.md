@@ -6,7 +6,6 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/3arthqu4ke/hmc-specifics/badge/main)](https://www.codefactor.io/repository/github/3arthqu4ke/hmc-specifics/overview/main)
 [![GitHub All Releases](https://img.shields.io/github/downloads/3arthqu4ke/hmc-specifics/total.svg)](https://github.com/3arthqu4ke/hmc-specifics/releases)
-![](https://github.com/3arthqu4ke/mc-runtime-test/actions/workflows/packages.yml/badge.svg)
 ![GitHub](https://img.shields.io/github/license/3arthqu4ke/hmc-specifics)
 ![Github last-commit](https://img.shields.io/github/last-commit/3arthqu4ke/hmc-specifics)
 
