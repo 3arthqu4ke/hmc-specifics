@@ -8,12 +8,11 @@ import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.realms.RealmsBridge;
 import net.minecraft.util.Session;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,7 +28,7 @@ import java.util.concurrent.Future;
 @Mixin(net.minecraft.client.Minecraft.class)
 public abstract class MixinMinecraft implements Minecraft {
     @Shadow
-    public EntityPlayerSP thePlayer;
+    public EntityClientPlayerMP thePlayer;
     @Shadow
     public net.minecraft.client.gui.GuiScreen currentScreen;
     @Shadow
