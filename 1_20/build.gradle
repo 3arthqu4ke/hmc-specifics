@@ -7,7 +7,7 @@ plugins {
     id 'xyz.wagyourtail.unimined' version '1.3.4'
 }
 
-group 'me.earth'
+group 'me.earth.headlessmc'
 version "$minecraft_version-${project(':api').project_version}"
 
 base {
@@ -167,7 +167,7 @@ processFabricResources {
 processNeoforgeResources {
     inputs.property "version", project.version
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching("META-INF/neoforge.mods.toml") {
         expand "version": project.version
     }
 }

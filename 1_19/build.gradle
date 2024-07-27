@@ -7,7 +7,7 @@ plugins {
     id 'xyz.wagyourtail.unimined' version '1.1.1'
 }
 
-group 'me.earth'
+group 'me.earth.headlessmc'
 version "$minecraft_version-${project(':api').project_version}"
 
 base {
