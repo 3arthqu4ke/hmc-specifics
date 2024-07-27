@@ -1,3 +1,6 @@
+> [!WARNING]
+> This is an outdated branch, development is happening on the [main](https://github.com/3arthqu4ke/hmc-specifics/tree/main) branch.
+
 ## HMC-Specifics
 Version specific implementations of the [HeadlessMc](https://github.com/3arthqu4ke/HeadlessMc) runtime. Just place the
 jar for your version in your mods folder. Then you need to find a way to send commands to your running Minecraft game.
