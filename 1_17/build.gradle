@@ -111,7 +111,11 @@ for (String platform_capitalized : ['Fabric', 'Lexforge']) {
 dependencies {
     compileOnly 'org.spongepowered:mixin:0.8.5-SNAPSHOT'
     lwjglAgent 'me.earth.headlessmc:headlessmc-lwjgl:1.8.1'
-
+    implementation ('net.minecraft:launchwrapper:1.12') {
+        exclude module: 'log4j-api'
+        exclude module: 'log4j-core'
+    }
+    
     jarLibs project(':api')
     jarLibs 'com.github.ImpactDevelopment:SimpleTweaker:1.2'
     jarLibs 'me.earth.headlessmc:headlessmc-api:1.8.0'
