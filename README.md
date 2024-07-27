@@ -29,3 +29,19 @@ The easiest way is probably to just launch it with HeadlessMc. The `-commands` f
 | disconnect | Disconnects you from a server. | |
 
 You can find a good example on how to use these commands [here](https://github.com/3arthqu4ke/HeadlessMc/issues/8#issuecomment-1159378478).
+
+The HMC-Specifics currently support the following Minecraft versions and modloaders:
+| Version  | Forge | Fabric | NeoForge |
+| :-: | :-: | :-: | :-: |
+| 1.21  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
+| 1.20.6  | :white_check_mark:  | :white_check_mark:  | :white_check_mark: |
+| 1.20.1-1.20.4  | :x:  | :x:  | :x:  |
+| 1.19.4  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.18.2  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.17.1  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.16.5  | :white_check_mark:  | :white_check_mark:  | - |
+| 1.12.2  | :white_check_mark:  | :warning:  | - |
+| 1.8.9  | :white_check_mark:  | :warning:  | - |
+| 1.7.10  | :white_check_mark:  | :warning:  | - |
+
+Versions marked with :warning: have not been tested yet, due to not being supported by HeadlessMC, e.g. fabric legacy versions.
