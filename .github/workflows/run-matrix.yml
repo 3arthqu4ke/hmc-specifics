@@ -66,8 +66,10 @@ jobs:
         run: ./gradlew build --stacktrace
       - name: Create mods dir
         run: mkdir -p run/mods
+      - name: List mod files
+        run: ls ${{ matrix.version.dir }}/build/libs
       - name: Copy mod jar
-        run: cp ${{ matrix.version.dir }}/build/libs/hmc-specifics-${{ matrix.version.mc }}-*-${{ matrix.version.type }}.jar run/mods
+        run: cp ${{ matrix.version.dir }}/build/libs/hmc-specifics-${{ matrix.version.mc }}-*-${{ matrix.version.type }}-release.jar run/mods
       - name: Run the MC client
         uses: 3arthqu4ke/mc-runtime-test@2.1.0
         with:
