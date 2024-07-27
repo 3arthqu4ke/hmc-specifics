@@ -2,7 +2,7 @@ package me.earth.hmc_specifics.forge;
 
 import net.minecraftforge.fml.common.Mod;
 
-@Mod("hmc_specifics")
+@Mod("headlessmc")
 public class ForgeMod {
 
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "hmc_specifics",
+  "id": "headlessmc",
   "version": "${version}",
 
   "name": "HMC-Specifics",

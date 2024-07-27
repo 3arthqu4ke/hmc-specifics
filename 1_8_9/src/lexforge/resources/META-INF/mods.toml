@@ -4,7 +4,7 @@ issueTrackerURL = "https://github.com/3arthqu4ke/hmc-specifics"
 license = "MIT"
 
 [[mods]]
-modId = "hmc_specifics"
+modId = "headlessmc"
 version = "${version}"
 displayName = "HMC-Specifics"
 authors = "3arthqu4ke"
@@ -12,7 +12,7 @@ description = '''
     Version specific implementations of the HMC Runtime
 '''
 
-[[dependencies.hmc_specifics]]
+[[dependencies.headlessmc]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.8.9]"
