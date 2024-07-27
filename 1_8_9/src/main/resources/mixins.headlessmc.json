@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.7.11",
+  "package": "me.earth.headlessmc.mc.mixins",
+  "refmap": "mixins.headlessmc.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinEntityPlayerSP",
+    "MixinFontRenderer",
+    "MixinGuiButton",
+    "MixinGuiScreen",
+    "MixinGuiTextField",
+    "MixinMinecraft"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}
