@@ -1,0 +1,5 @@
+try {
+    project.name = 'hmc-specifics-api'
+} catch (Exception ignored) {
+    rootProject.name = 'hmc-specifics-api'
+}

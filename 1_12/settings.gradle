@@ -25,7 +25,7 @@ pluginManagement {
     }
 }
 
-include 'api'
-project(':api').projectDir = file('../api')
+include 'hmc-specifics-api'
+project(':hmc-specifics-api').projectDir = file('../hmc-specifics-api')
 
-rootProject.name = 'hmc-specifics'
+rootProject.name = "hmc-specifics-${minecraft_version}"

@@ -1,9 +1,9 @@
 package me.earth.headlessmc.mc.mixins;
 
+import me.earth.headlessmc.api.util.ReflectionUtil;
 import me.earth.headlessmc.mc.gui.GuiButton;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.gui.TextField;
-import me.earth.headlessmc.util.ReflectionUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;

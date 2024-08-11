@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.gradle.api.publish.maven.MavenPublication
 
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
@@ -9,11 +8,12 @@ plugins {
 }
 
 group='me.earth.headlessmc'
-version "$minecraft_version-${project(':api').project_version}"
+version "${project(':hmc-specifics-api').project_version}"
 
 base {
-    archivesName = 'hmc-specifics'
+    archivesName = "hmc-specifics-${minecraft_version}"
 }
+
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -47,6 +47,19 @@ repositories {
         url 'https://3arthqu4ke.github.io/maven'
     }
 
+    // TODO: REMOVE!
+    maven {
+        name = "ossrh" // for MinecraftAuth SNAPSHOTS, TODO: PLEASE RELEASE ON MAVENCENTRAL!
+        url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+    }
+    maven {
+        name 'JitPackMaven'
+        url 'https://jitpack.io'
+    }
+    maven {
+        name 'SuperDirMaven'
+        url new File(layout.projectDirectory.asFile.getParent() + "/libs").toURI().toURL().toString()
+    }
     mavenCentral()
 }
 
@@ -105,6 +118,8 @@ dependencies {
         exclude module: 'log4j-api'
         exclude module: 'log4j-core'
     }
+
+    lexforgeRuntimeOnly 'com.github.ImpactDevelopment:SimpleTweaker:1.2'
     jarLibs 'com.github.ImpactDevelopment:SimpleTweaker:1.2'
     jarLibs('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
@@ -113,10 +128,10 @@ dependencies {
         exclude module: 'commons-io'
     }
 
-    jarLibs project(':api')
-    jarLibs 'me.earth.headlessmc:headlessmc-api:1.8.0'
-    jarLibs 'me.earth.headlessmc:headlessmc-commons:1.8.0'
-    jarLibs 'me.earth.headlessmc:headlessmc-runtime:1.8.0'
+    jarLibs project(':hmc-specifics-api')
+    jarLibs "me.earth.headlessmc:headlessmc-api:${project(':hmc-specifics-api').headlessmc_version}"
+    jarLibs "me.earth.headlessmc:headlessmc-jline:${project(':hmc-specifics-api').headlessmc_version}"
+    jarLibs "me.earth.headlessmc:headlessmc-runtime:${project(':hmc-specifics-api').headlessmc_version}"
 }
 
 for (String platform_capitalized : ['Fabric', 'Lexforge']) {
@@ -151,6 +166,7 @@ tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
         attributes(
                 'Implementation-Title': 'HMC-Specifics',
                 'TweakClass': 'me.earth.headlessmc.mc.tweaker.HeadlessMcMcTweaker',
+                'MixinConnector': 'me.earth.headlessmc.mc.tweaker.HeadlessMcMixinConnector',
                 'MixinConfigs': "mixins.headlessmc.json",
                 'Implementation-Version': project.version,
         )
@@ -177,13 +193,13 @@ processLexforgeResources {
     }
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            "${name.toLowerCase()}"(MavenPublication) {
-                ((MavenPublication) it).groupId "${group}"
-                ((MavenPublication) it).artifactId "${archivesBaseName.toLowerCase()}"
-                ((MavenPublication) it).version "${version}"
+publishing {
+    publications {
+        "${name.toLowerCase()}"(MavenPublication) {
+            ((MavenPublication) it).groupId "${group}"
+            ((MavenPublication) it).artifactId "${archivesBaseName.toLowerCase()}"
+            ((MavenPublication) it).version "${version}"
+            afterEvaluate {
                 from components.java
                 for (String platform: ['Fabric', 'Lexforge']) {
                     String platform_lower = platform.toLowerCase()
@@ -193,23 +209,27 @@ afterEvaluate {
                 }
             }
         }
+    }
 
-        repositories {
-            if (System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL') == null) {
-                maven {
-                    name = 'BuildDirMaven'
-                    url = rootProject.projectDir.toPath().parent.resolve('build').resolve('maven')
-                }
-            } else {
-                maven {
-                    name = 'GithubPagesMaven'
-                    url = System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL')
-                    credentials {
-                        username = System.getenv('GITHUB_USER')
-                        password = System.getenv('GITHUB_TOKEN')
-                    }
+    repositories {
+        if (System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL') == null) {
+            maven {
+                name = 'BuildDirMaven'
+                url = layout.buildDirectory.dir('maven')
+            }
+        } else {
+            maven {
+                name = 'GithubPagesMaven'
+                url = System.getenv('DEPLOY_TO_GITHUB_PACKAGES_URL')
+                credentials {
+                    username = System.getenv('GITHUB_USER')
+                    password = System.getenv('GITHUB_TOKEN')
                 }
             }
         }
     }
+}
+
+publish {
+    dependsOn build
 }
