@@ -111,6 +111,11 @@ sourceSets {
         compileClasspath += configurations.mainImplementation
         runtimeClasspath += configurations.mainImplementation
     }
+
+    test {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.compileClasspath
+    }
 }
 
 dependencies {

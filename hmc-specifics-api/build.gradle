@@ -79,6 +79,10 @@ dependencies {
     implementation "me.earth.headlessmc:headlessmc-auth:${headlessmc_version}"
     implementation "me.earth.headlessmc:headlessmc-jline:${headlessmc_version}"
 
+    implementation 'net.kyori:adventure-text-serializer-ansi:4.17.0'
+    implementation 'net.kyori:adventure-text-serializer-gson:4.17.0'
+    implementation 'net.kyori:adventure-text-serializer-legacy:4.17.0'
+
     implementation 'org.jline:jline:3.20.0'
 
     testImplementation("me.earth.headlessmc:headlessmc-api:${headlessmc_version}:test-fixtures")

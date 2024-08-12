@@ -30,8 +30,14 @@ import java.util.Optional;
 // Core.CATEGORY_NAME and Appender.ELEMENT_TYPE are constants that do not exist on older versions of Log4J but its no problem because they are constants and get inlined
 @Plugin(name = HMCLog4JAppender.PLUGIN_NAME, category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
 public class HMCLog4JAppender extends AbstractAppender {
+    public static final boolean ANSI_ENABLED = Boolean.parseBoolean(System.getProperty("hmc.log4jappender.ansi", "true"));
     public static final String PLUGIN_NAME = "HMCLog4JAppender";
     private static final InAndOutProvider SYS_OUT = new InAndOutProvider();
+
+    private static final String ANSI_RESET = "\u001B[m";
+    private static final String ANSI_ERROR = "\u001B[31;1m"; // Bold Red
+    private static final String ANSI_WARN = "\u001B[33;1m"; // Bold Yellow
+
     private static HMCLog4JAppender instance;
 
     private static final Logger LOGGER = LogManager.getLogger(HMCLog4JAppender.class);
@@ -47,7 +53,19 @@ public class HMCLog4JAppender extends AbstractAppender {
     @Override
     public void append(LogEvent event) {
         synchronized (this) {
-            appenderPrinter.printAboveLineReader(getLayout().toSerializable(event).toString());
+            String text = getLayout().toSerializable(event).toString();
+            if (ANSI_ENABLED) {
+                Level level = event.getLevel();
+                // if (level.isMoreSpecificThan(Level.ERROR)) { // not available on all log4j versions
+                if (level.intLevel() <= Level.ERROR.intLevel()) {
+                    text = ANSI_ERROR + text + ANSI_RESET;
+                // } else if (level.isMoreSpecificThan(Level.WARN)) { // not available on all log4j versions
+                } else if (level.intLevel() <= Level.WARN.intLevel()) {
+                    text = ANSI_WARN + text + ANSI_RESET;
+                }
+            }
+
+            appenderPrinter.printAboveLineReader(text);
         }
     }
 
@@ -80,6 +98,7 @@ public class HMCLog4JAppender extends AbstractAppender {
     // this is kinda gross and I am not sure what I am doing but it works!
     @SuppressWarnings("RedundantSuppression") // RedundantArrayCreation
     private static void install(LoggerContext context, AppenderPrinter appenderPrinter) {
+        // TODO: it seems that in 1.7.10 there are loggers that we have not installed ourselves on?
         Configuration config = context.getConfiguration();
         LoggerConfig rootLoggerConfig;
         try {

@@ -13,6 +13,7 @@ import java.util.function.BiFunction;
 
 /**
  * Wrapper around brigadier because Mc ships different versions, so I am just careful.
+ * I have made bad experiences on forge with even loading classes that contain references to classes not available.
  */
 public class BrigadierWrapper {
     public static <T> List<Map.Entry<String, String>> getCompletions(CommandDispatcher<T> dispatcher,
