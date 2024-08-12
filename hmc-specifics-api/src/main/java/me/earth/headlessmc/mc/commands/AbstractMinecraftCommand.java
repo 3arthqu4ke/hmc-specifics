@@ -2,6 +2,7 @@ package me.earth.headlessmc.mc.commands;
 
 import me.earth.headlessmc.api.HeadlessMc;
 import me.earth.headlessmc.api.command.AbstractCommand;
+import me.earth.headlessmc.api.command.CommandException;
 import me.earth.headlessmc.mc.Minecraft;
 
 public abstract class AbstractMinecraftCommand extends AbstractCommand {

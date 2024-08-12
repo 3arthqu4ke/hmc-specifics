@@ -15,7 +15,7 @@ public abstract class AbstractPlayerCommand extends AbstractMinecraftCommand {
     protected abstract void execute(Player player, String... args);
 
     @Override
-    public void execute(String... args) throws CommandException {
+    public void execute(String line, String... args) throws CommandException {
         Player player = mc.getPlayer();
         if (player == null) {
             throw new CommandException("You are not ingame!");

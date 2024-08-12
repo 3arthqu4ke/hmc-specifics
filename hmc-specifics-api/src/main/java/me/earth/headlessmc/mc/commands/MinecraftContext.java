@@ -17,7 +17,6 @@ public class MinecraftContext extends CommandContextImpl {
         this.mc = mc;
         add(new QuitCommand(ctx, mc));
         add(new HelpCommand(ctx));
-        add(new MessageCommand(ctx, mc));
         add(new RenderCommand(ctx, mc));
         add(new ClickCommand(ctx, mc));
         add(new GuiCommand(ctx, mc));
@@ -27,6 +26,9 @@ public class MinecraftContext extends CommandContextImpl {
         add(new MemoryCommand(ctx));
         add(new ConnectCommand(ctx, mc));
         add(new DisconnectCommand(ctx, mc));
+        add(new MessageCommand(ctx, mc));
+        add(new CommandCommand(ctx, mc));
+        add(new DotMessageCommand(ctx, mc));
         if (ctx.getConfig().get(
             SpecificProperties.KEEP_RUNTIME_COMMANDS, false)) {
             for (Command command : ctx.getCommandLine().getCommandContext()) {
@@ -38,11 +40,11 @@ public class MinecraftContext extends CommandContextImpl {
     }
 
     @Override
-    protected void executeCommand(Command cmd, String... args) {
+    protected void executeCommand(Command cmd, String line, String... args) {
         if (cmd instanceof ScheduledCommand) {
-            mc.scheduleEx(() -> super.executeCommand(cmd, args));
+            mc.scheduleEx(() -> super.executeCommand(cmd, line, args));
         } else {
-            super.executeCommand(cmd, args);
+            super.executeCommand(cmd, line, args);
         }
     }
 

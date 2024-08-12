@@ -4,9 +4,9 @@ import me.earth.headlessmc.api.HeadlessMc;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.player.Player;
 
-public class MessageCommand extends PrefixedCommand implements ScheduledCommand {
-    public MessageCommand(HeadlessMc ctx, Minecraft mc) {
-        super(ctx, mc, "msg", "Sends a chat message.", "msg ", "message");
+public class DotMessageCommand extends PrefixedCommand {
+    public DotMessageCommand(HeadlessMc ctx, Minecraft mc) {
+        super(ctx, mc, ".", "Sends a chat message.", ".", "message");
     }
 
     @Override

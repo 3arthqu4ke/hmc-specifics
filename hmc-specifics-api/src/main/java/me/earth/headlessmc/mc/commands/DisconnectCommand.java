@@ -11,7 +11,7 @@ public class DisconnectCommand extends AbstractMinecraftCommand
     }
 
     @Override
-    public void execute(String... args) throws CommandException {
+    public void execute(String line, String... args) throws CommandException {
         ctx.log("Disconnecting...");
         mc.disconnect();
     }

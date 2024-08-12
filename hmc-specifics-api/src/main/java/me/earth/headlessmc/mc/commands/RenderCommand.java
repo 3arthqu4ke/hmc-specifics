@@ -18,7 +18,7 @@ public class RenderCommand extends AbstractMinecraftCommand {
     }
 
     @Override
-    public void execute(String... args) throws CommandException {
+    public void execute(String line, String... args) throws CommandException {
         FontRenderer fontRenderer = mc.getFontRenderer();
 
         long time = 100L;

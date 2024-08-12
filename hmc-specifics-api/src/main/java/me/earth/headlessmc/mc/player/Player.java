@@ -8,6 +8,7 @@ import me.earth.headlessmc.mc.Adapter;
 public interface Player extends Adapter {
     /**
      * Sends a chat message.
+     * If the message starts with a "/" a command will be send instead.
      *
      * @param message the message to send.
      */

@@ -10,7 +10,7 @@ public class QuitCommand extends AbstractMinecraftCommand {
     }
 
     @Override
-    public void execute(String... args) {
+    public void execute(String line, String... args) {
         if (CommandUtil.hasFlag("-force", args)) {
             ctx.log("Forcing Minecraft to Exit!");
             System.exit(0);
@@ -29,7 +29,7 @@ public class QuitCommand extends AbstractMinecraftCommand {
     }
 
     @Override
-    public boolean matches(String... args) {
+    public boolean matches(String line, String... args) {
         if (args.length > 0) {
             String lower = args[0].toLowerCase();
             return lower.equalsIgnoreCase("quit")

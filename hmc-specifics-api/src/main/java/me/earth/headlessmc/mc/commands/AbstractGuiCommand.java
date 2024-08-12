@@ -13,7 +13,7 @@ public abstract class AbstractGuiCommand extends AbstractMinecraftCommand {
     }
 
     @Override
-    public void execute(String... args) throws CommandException {
+    public void execute(String line, String... args) throws CommandException {
         GuiScreen gui = mc.getScreen();
         if (gui == null) {
             ctx.log("Minecraft is currently not displaying a Gui.");
