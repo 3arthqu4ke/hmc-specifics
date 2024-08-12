@@ -85,7 +85,6 @@ public class HMCLog4JAppender extends AbstractAppender {
             return;
         }
 
-        closeTerminalConsoleAppender(deencapsulator);
         LOGGER.info(System.out);
         LOGGER.info(System.out.getClass().getClassLoader());
         LOGGER.info(HMCLog4JAppender.class.getClassLoader());
@@ -177,7 +176,8 @@ public class HMCLog4JAppender extends AbstractAppender {
         }
     }
 
-    private static void closeTerminalConsoleAppender(Deencapsulator deencapsulator) {
+    // TODO: it would be even cooler if we could instead make use of the TerminalConsoleAppender terminal?
+    public static void closeTerminalConsoleAppender(Deencapsulator deencapsulator) {
         //noinspection RedundantSuppression
         try {
             deencapsulator.deencapsulate(TerminalConsoleAppender.class);

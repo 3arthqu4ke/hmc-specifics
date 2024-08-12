@@ -43,6 +43,7 @@ public class SpecificsInitializer extends RuntimeInitializer {
             Arrays.stream(Logger.getLogger("org.jline").getHandlers()).forEach(handler -> handler.setLevel(Level.ALL));
         }
 
+        HMCLog4JAppender.closeTerminalConsoleAppender(hmc.getDeencapsulator());
         Object remoteCommandLine = ApiClassloadingHelper.installOnOtherInstances(hmc);
         if (remoteCommandLine == null) {
             if (hmc.getConfig().get(JLineProperties.ENABLED, true)) {

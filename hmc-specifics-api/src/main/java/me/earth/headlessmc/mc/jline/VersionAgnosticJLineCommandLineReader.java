@@ -11,10 +11,6 @@ import me.earth.headlessmc.mc.SpecificsInitializer;
 import me.earth.headlessmc.mc.log4j.HMCLog4JAppender;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
-import org.jline.terminal.impl.jansi.JansiTerminalProvider;
-import org.jline.terminal.impl.jna.JnaTerminalProvider;
-import org.jline.terminal.spi.SystemStream;
-import org.jline.terminal.spi.TerminalProvider;
 import org.jline.utils.OSUtils;
 
 import java.io.IOError;

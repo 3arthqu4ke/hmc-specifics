@@ -105,13 +105,13 @@ public class AdventureHelperImpl implements AdventureHelper {
     @Override
     public String toAnsiString(String json) {
         Component jsonComponent = GsonComponentSerializer.gson().deserialize(json);
-        return ansiSerializer.serialize(jsonComponent);
+        return "\u001B[m" + ansiSerializer.serialize(jsonComponent);
     }
 
     @Override
     public String toAnsiString(JsonElement json) {
         Component jsonComponent = GsonComponentSerializer.gson().deserializeFromTree(json);
-        return ansiSerializer.serialize(jsonComponent);
+        return "\u001B[m" + ansiSerializer.serialize(jsonComponent);
     }
 
     @Override
