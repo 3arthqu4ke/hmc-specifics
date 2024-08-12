@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class DisAndConnectCommandTests {
     @Test
     public void connectCommandTest() {
-        CommandContext ctx = new MinecraftContext(MockedHeadlessMc.INSTANCE,
-                                                  MockMc.INSTANCE);
+        CommandContext ctx = new MinecraftContext(MockedHeadlessMc.INSTANCE, MockMc.INSTANCE);
         MockMc.INSTANCE.disconnect();
         assertNull(MockMc.INSTANCE.ip);
         assertEquals(-1, MockMc.INSTANCE.port);

@@ -2,11 +2,13 @@ package me.earth.headlessmc.mc.mixins;
 
 import com.mojang.realmsclient.RealmsMainScreen;
 import me.earth.headlessmc.mc.Minecraft;
+import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
 import me.earth.headlessmc.mc.FontRendererImpl;
 import me.earth.headlessmc.mc.Initializer;
+import net.minecraft.client.User;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -20,7 +22,9 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,6 +41,10 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
     public Screen screen;
     @Shadow
     public ClientLevel level;
+    @Shadow
+    @Final
+    @Mutable
+    private User user;
 
     @Shadow
     public abstract void stop();
@@ -124,6 +132,17 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         }
 
         this.setScreen(new TitleScreen());
+    }
+
+    @Override
+    public McAccount getMcAccount() {
+        User user = this.user;
+        return user == null ? null : new McAccount(user.getName(), user.getProfileId(), user.getAccessToken());
+    }
+
+    @Override
+    public void setMcAccount(McAccount account) {
+        this.user = new User(account.getName(), account.getUuid(), account.getAccessToken(), account.getXuid(), account.getClientId(), User.Type.MSA);
     }
 
 }

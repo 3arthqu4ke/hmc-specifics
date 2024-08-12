@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import me.earth.headlessmc.mc.FontRendererImpl;
 import me.earth.headlessmc.mc.Initializer;
 import me.earth.headlessmc.mc.Minecraft;
+import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
@@ -14,13 +15,17 @@ import net.minecraft.client.main.GameConfiguration;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.realms.RealmsBridge;
+import net.minecraft.util.Session;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.Future;
 
 @Mixin(net.minecraft.client.Minecraft.class)
@@ -48,6 +53,9 @@ public abstract class MixinMinecraft implements Minecraft {
     public abstract void loadWorld(WorldClient worldClientIn);
 
     @Shadow public abstract boolean isConnectedToRealms();
+
+    @Mutable
+    @Shadow @Final private Session session;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(GameConfiguration gameConfig, CallbackInfo ci)
@@ -106,6 +114,24 @@ public abstract class MixinMinecraft implements Minecraft {
         } else {
             this.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
         }
+    }
+
+    @Override
+    public McAccount getMcAccount() {
+        Session user = this.session;
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(user.getPlayerID());
+        } catch(IllegalArgumentException e) {
+            uuid = user.getProfile().getId();
+        }
+
+        return new McAccount(user.getUsername(), uuid, user.getToken());
+    }
+
+    @Override
+    public void setMcAccount(McAccount account) {
+        this.session = new Session(account.getName(), account.getUuid().toString(), account.getAccessToken(), "mojang");
     }
 
 }

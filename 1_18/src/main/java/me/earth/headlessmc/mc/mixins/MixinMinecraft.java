@@ -3,9 +3,11 @@ package me.earth.headlessmc.mc.mixins;
 import me.earth.headlessmc.mc.FontRendererImpl;
 import me.earth.headlessmc.mc.Initializer;
 import me.earth.headlessmc.mc.Minecraft;
+import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
+import net.minecraft.client.User;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,13 +19,16 @@ import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.TranslatableComponent;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @SuppressWarnings("MixinSuperClass")
 @Mixin(net.minecraft.client.Minecraft.class)
@@ -48,6 +53,9 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop implements 
     public abstract void clearLevel(Screen screen);
 
     @Shadow public abstract void clearLevel();
+
+    @Mutable
+    @Shadow @Final private User user;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(GameConfig config, CallbackInfo ci) throws IOException {
@@ -102,6 +110,24 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop implements 
         }
 
         this.setScreen(new TitleScreen());
+    }
+
+    @Override
+    public McAccount getMcAccount() {
+        User user = this.user;
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(user.getUuid());
+        } catch(IllegalArgumentException e) {
+            uuid = user.getGameProfile().getId();
+        }
+
+        return new McAccount(user.getName(), uuid, user.getAccessToken());
+    }
+
+    @Override
+    public void setMcAccount(McAccount account) {
+        this.user = new User(account.getName(), account.getUuid().toString(), account.getAccessToken(), account.getXuid(), account.getClientId(), User.Type.MSA);
     }
 
 }

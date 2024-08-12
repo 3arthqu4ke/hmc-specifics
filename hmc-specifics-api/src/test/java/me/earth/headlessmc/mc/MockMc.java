@@ -1,5 +1,6 @@
 package me.earth.headlessmc.mc;
 
+import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
@@ -43,6 +44,16 @@ public enum MockMc implements Minecraft {
     public void disconnect() {
         this.ip = null;
         this.port = -1;
+    }
+
+    @Override
+    public McAccount getMcAccount() {
+        return null;
+    }
+
+    @Override
+    public void setMcAccount(McAccount account) {
+
     }
 
     @Override

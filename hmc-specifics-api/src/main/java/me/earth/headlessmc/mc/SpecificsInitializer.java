@@ -8,7 +8,6 @@ import me.earth.headlessmc.mc.commands.MinecraftContext;
 import me.earth.headlessmc.mc.jline.VersionAgnosticJLineCommandLineReader;
 import me.earth.headlessmc.mc.log4j.HMCLog4JAppender;
 import me.earth.headlessmc.runtime.RuntimeInitializer;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -25,6 +24,13 @@ public class SpecificsInitializer extends RuntimeInitializer {
 
     public void init(Config config) {
         super.init(config);
+    }
+
+    @Override
+    protected void createCommandContext(HeadlessMc hmc) {
+        MinecraftContext context = new MinecraftContext(hmc, mc);
+        hmc.getCommandLine().setCommandContext(context);
+        hmc.getCommandLine().setBaseContext(context);
     }
 
     @Override
@@ -48,6 +54,7 @@ public class SpecificsInitializer extends RuntimeInitializer {
             HMCLog4JAppender.install(remoteCommandLine);
         }
 
+        /* Code to test if the appender works
         Thread annoyingThread = new Thread(() -> {
             while (true) {
                 try {
@@ -61,14 +68,7 @@ public class SpecificsInitializer extends RuntimeInitializer {
         });
 
         annoyingThread.setDaemon(true);
-        annoyingThread.start();
-    }
-
-    @Override
-    protected void createCommandContext(HeadlessMc hmc) {
-        MinecraftContext context = new MinecraftContext(hmc, mc);
-        hmc.getCommandLine().setCommandContext(context);
-        hmc.getCommandLine().setBaseContext(context);
+        annoyingThread.start();*/
     }
 
 }

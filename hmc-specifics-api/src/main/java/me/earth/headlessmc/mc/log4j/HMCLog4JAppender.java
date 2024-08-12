@@ -32,6 +32,7 @@ import java.util.Optional;
 public class HMCLog4JAppender extends AbstractAppender {
     public static final String PLUGIN_NAME = "HMCLog4JAppender";
     private static final InAndOutProvider SYS_OUT = new InAndOutProvider();
+    private static HMCLog4JAppender instance;
 
     private static final Logger LOGGER = LogManager.getLogger(HMCLog4JAppender.class);
     private final AppenderPrinter appenderPrinter;
@@ -40,6 +41,7 @@ public class HMCLog4JAppender extends AbstractAppender {
     protected HMCLog4JAppender(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions, AppenderPrinter appenderPrinter) {
         super(name, filter, layout, ignoreExceptions/*, Property.EMPTY_ARRAY*/);
         this.appenderPrinter = appenderPrinter;
+        instance = this;
     }
 
     @Override
@@ -47,6 +49,14 @@ public class HMCLog4JAppender extends AbstractAppender {
         synchronized (this) {
             appenderPrinter.printAboveLineReader(getLayout().toSerializable(event).toString());
         }
+    }
+
+    public AppenderPrinter getAppenderPrinter() {
+        return appenderPrinter;
+    }
+
+    public static HMCLog4JAppender getInstance() {
+        return instance;
     }
 
     public static void install(Object commandLine) {

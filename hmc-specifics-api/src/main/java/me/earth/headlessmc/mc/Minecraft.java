@@ -1,5 +1,6 @@
 package me.earth.headlessmc.mc;
 
+import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
@@ -48,5 +49,19 @@ public interface Minecraft extends SchedulesTasks, Adapter {
      * Disconnects you if you are connected to a server.
      */
     void disconnect();
+
+    /**
+     * Retrieves the account that is used to authenticate with servers.
+     *
+     * @return the current session of Minecraft. Nullable.
+     */
+    McAccount getMcAccount();
+
+    /**
+     * Sets the account that is used to authenticate with servers.
+     *
+     * @param account the account to authenticate with.
+     */
+    void setMcAccount(McAccount account);
 
 }

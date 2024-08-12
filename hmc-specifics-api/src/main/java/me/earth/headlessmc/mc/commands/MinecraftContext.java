@@ -26,6 +26,7 @@ public class MinecraftContext extends CommandContextImpl {
         add(new MemoryCommand(ctx));
         add(new ConnectCommand(ctx, mc));
         add(new DisconnectCommand(ctx, mc));
+        add(new LoginCommand(ctx, mc));
         add(new MessageCommand(ctx, mc));
         add(new CommandCommand(ctx, mc));
         add(new DotMessageCommand(ctx, mc));
