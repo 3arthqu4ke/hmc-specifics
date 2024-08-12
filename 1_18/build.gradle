@@ -105,6 +105,10 @@ configurations {
     lwjglAgent.extendsFrom runtimeOnly
     jarLibs
     implementation.extendsFrom jarLibs
+    fabricJarLibs
+    implementation.extendsFrom jarLibs
+    forgeJarLibs
+    implementation.extendsFrom forgeJarLibs
 }
 
 for (String platform_capitalized : ['Fabric', 'Lexforge']) {
@@ -117,6 +121,7 @@ for (String platform_capitalized : ['Fabric', 'Lexforge']) {
         from remapJarTask.outputs
         it.configurations += [ project.configurations.jarLibs ]
         if ('fabricShadowJar' != it.name) {
+            it.configurations += [ project.configurations.forgeJarLibs ]
             it.dependencies {
                 exclude(dependency('org.jline:jline:.*'))
                 exclude(dependency('com.google.errorprone:error_prone_annotations:.*'))
@@ -125,6 +130,8 @@ for (String platform_capitalized : ['Fabric', 'Lexforge']) {
                 exclude(dependency('net.java.dev.jna:jna:.*'))
                 exclude(dependency('org.slf4j:slf4j-api:.*'))
             }
+        } else {
+            it.configurations += [ project.configurations.fabricJarLibs ]
         }
     }
 
@@ -148,6 +155,16 @@ dependencies {
     }
 
     jarLibs (group: 'org.jline', name: 'jline-terminal-jna', version: '3.20.0') {
+        exclude module: 'jline'
+        exclude module: 'jline-terminal'
+    }
+
+    forgeJarLibs (group: 'org.jline', name: 'jline-terminal-jna', version: '3.12.1') {
+        exclude module: 'jline'
+        exclude module: 'jline-terminal'
+    }
+
+    fabricJarLibs (group: 'org.jline', name: 'jline-terminal-jna', version: '3.26.3') {
         exclude module: 'jline'
         exclude module: 'jline-terminal'
     }
