@@ -1,9 +1,13 @@
 package me.earth.headlessmc.mc.mixins;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import me.earth.headlessmc.mc.FontRendererImpl;
 import me.earth.headlessmc.mc.Initializer;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.auth.McAccount;
+import me.earth.headlessmc.mc.brigadier.BrigadierWrapper;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
@@ -18,6 +22,7 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.TranslatableComponent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +33,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 
 @SuppressWarnings("MixinSuperClass")
 @Mixin(net.minecraft.client.Minecraft.class)
@@ -128,6 +135,21 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop implements 
     @Override
     public void setMcAccount(McAccount account) {
         this.user = new User(account.getName(), account.getUuid().toString(), account.getAccessToken(), "mojang");
+    }
+
+    @Override
+    public List<Map.Entry<String, String>> getCompletions(String line) {
+        LocalPlayer player = this.player;
+        //noinspection ConstantValue
+        if (player != null && player.connection != null && player.connection.getCommands() != null) {
+            CommandDispatcher<SharedSuggestionProvider> dispatcher = player.connection.getCommands();
+            SharedSuggestionProvider suggestionsProvider = player.connection.getSuggestionsProvider();
+            Collection<String> customTabSugggestions = suggestionsProvider.getOnlinePlayerNames();
+            BiFunction<Collection<String>, SuggestionsBuilder, CompletableFuture<Suggestions>> suggestFunction = SharedSuggestionProvider::suggest;
+            return BrigadierWrapper.getCompletions(dispatcher, suggestionsProvider, customTabSugggestions, suggestFunction, line);
+        }
+
+        return new ArrayList<>();
     }
 
 }

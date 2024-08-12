@@ -6,6 +6,10 @@ import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
 import me.earth.headlessmc.mc.scheduling.SchedulesTasks;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Represents the Minecraft object.
  */
@@ -63,5 +67,17 @@ public interface Minecraft extends SchedulesTasks, Adapter {
      * @param account the account to authenticate with.
      */
     void setMcAccount(McAccount account);
+
+    /**
+     * Gets completions for a command.
+     *
+     * @param line the command to complete.
+     * @see me.earth.headlessmc.mc.brigadier.BrigadierSuggestionsProvider
+     * @see me.earth.headlessmc.api.command.Command#getCompletions(String, List, String...)
+     * @return the completions for the given command.
+     */
+    default List<Map.Entry<String, String>> getCompletions(String line) {
+        return new ArrayList<>();
+    }
 
 }

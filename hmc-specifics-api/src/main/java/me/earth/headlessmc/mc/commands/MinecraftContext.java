@@ -9,6 +9,9 @@ import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.SpecificProperties;
 import me.earth.headlessmc.runtime.commands.RuntimeQuitCommand;
 
+import java.util.List;
+import java.util.Map;
+
 public class MinecraftContext extends CommandContextImpl {
     protected final Minecraft mc;
 
@@ -38,6 +41,11 @@ public class MinecraftContext extends CommandContextImpl {
                 }
             }
         }
+    }
+
+    @Override
+    public List<Map.Entry<String, String>> getCompletions(String line) {
+        return super.getCompletions(line);
     }
 
     @Override

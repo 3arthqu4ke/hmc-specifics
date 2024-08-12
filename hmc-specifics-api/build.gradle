@@ -35,6 +35,10 @@ repositories {
         name 'SuperDirMaven'
         url new File(layout.projectDirectory.asFile.getParent() + "/libs").toURI().toURL().toString()
     }
+
+    maven {
+        url "https://libraries.minecraft.net"
+    }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -52,6 +56,9 @@ java {
 }
 
 dependencies {
+    compileOnly 'com.mojang:brigadier:1.0.17' // old version for testing
+    // compileOnly 'com.mojang:brigadier:1.2.9' // new version for testing
+
     compileOnly (group: 'net.minecrell', name: 'terminalconsoleappender', version: '1.3.0') {
         transitive false
     }
@@ -77,6 +84,8 @@ dependencies {
     testImplementation("me.earth.headlessmc:headlessmc-api:${headlessmc_version}:test-fixtures")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'com.mojang:brigadier:1.0.17' // old version for testing
+    // testImplementation 'com.mojang:brigadier:1.2.9' // new version for testing
 }
 
 test {
