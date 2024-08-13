@@ -17,7 +17,7 @@ jobs:
           java-version: 8
           distribution: temurin
       - name: Grant execute permission for gradlew
-        working-directory: ./api
+        working-directory: ./hmc-specifics-api
         run: chmod +x gradlew
       - name: Publish with gradle
         working-directory: ./api
