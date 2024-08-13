@@ -4,16 +4,20 @@
   "refmap": "mixins.headlessmc.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "IBootstrap",
     "MixinAbstractWidget",
     "MixinBlockableEventLoop",
-    "MixinFont",
     "MixinButton",
-    "MixinScreen",
     "MixinEditBox",
+    "MixinFont",
     "MixinLocalPlayer",
-    "MixinMinecraft"
+    "MixinMinecraft",
+    "MixinScreen"
   ],
   "injectors": {
     "maxShiftBy": 10
-  }
+  },
+  "client": [
+    "MixinChatComponent"
+  ]
 }

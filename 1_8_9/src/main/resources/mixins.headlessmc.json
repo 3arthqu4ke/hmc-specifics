@@ -14,5 +14,8 @@
   ],
   "injectors": {
     "maxShiftBy": 10
-  }
+  },
+  "client": [
+    "MixinGuiNewChat"
+  ]
 }

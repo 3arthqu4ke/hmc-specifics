@@ -1,12 +1,19 @@
 package me.earth.headlessmc.mc.mixins;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.realmsclient.RealmsMainScreen;
+import me.earth.headlessmc.mc.FontRendererImpl;
+import me.earth.headlessmc.mc.Initializer;
 import me.earth.headlessmc.mc.Minecraft;
+import me.earth.headlessmc.mc.auth.McAccount;
+import me.earth.headlessmc.mc.brigadier.BrigadierWrapper;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.player.Player;
-import me.earth.headlessmc.mc.FontRendererImpl;
-import me.earth.headlessmc.mc.Initializer;
+import net.minecraft.client.User;
+import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -18,15 +25,23 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 
 @Mixin(net.minecraft.client.Minecraft.class)
 public abstract class MixinMinecraft extends MixinBlockableEventLoop
@@ -37,6 +52,10 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
     public Screen screen;
     @Shadow
     public ClientLevel level;
+    @Shadow
+    @Final
+    @Mutable
+    private User user;
 
     @Shadow
     public abstract void stop();
@@ -52,7 +71,7 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
     @Shadow public abstract @Nullable ServerData getCurrentServer();
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void onInit(GameConfig config, CallbackInfo ci) throws IOException {
+    private void onInit(GameConfig config, CallbackInfo ci) {
         Initializer.init(this);
     }
 
@@ -124,6 +143,32 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
         }
 
         this.setScreen(new TitleScreen());
+    }
+
+    @Override
+    public McAccount getMcAccount() {
+        User user = this.user;
+        return user == null ? null : new McAccount(user.getName(), user.getProfileId(), user.getAccessToken());
+    }
+
+    @Override
+    public void setMcAccount(McAccount account) {
+        this.user = new User(account.getName(), account.getUuid(), account.getAccessToken(), account.getXuid(), account.getClientId(), User.Type.MSA);
+    }
+
+    @Override
+    public List<Map.Entry<String, String>> getCompletions(String line) {
+        LocalPlayer player = this.player;
+        //noinspection ConstantValue
+        if (player != null && player.connection != null && player.connection.getCommands() != null) {
+            CommandDispatcher<SharedSuggestionProvider> dispatcher = player.connection.getCommands();
+            SharedSuggestionProvider suggestionsProvider = player.connection.getSuggestionsProvider();
+            Collection<String> customTabSugggestions = suggestionsProvider.getCustomTabSugggestions();
+            BiFunction<Collection<String>, SuggestionsBuilder, CompletableFuture<Suggestions>> suggestFunction = SharedSuggestionProvider::suggest;
+            return BrigadierWrapper.getCompletions(dispatcher, suggestionsProvider, customTabSugggestions, suggestFunction, line);
+        }
+
+        return new ArrayList<>();
     }
 
 }

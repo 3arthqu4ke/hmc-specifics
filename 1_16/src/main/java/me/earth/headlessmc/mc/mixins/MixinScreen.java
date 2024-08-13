@@ -5,7 +5,7 @@ import me.earth.headlessmc.mc.gui.GuiButton;
 import me.earth.headlessmc.mc.gui.GuiElement;
 import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.gui.TextField;
-import me.earth.headlessmc.util.ReflectionUtil;
+import me.earth.headlessmc.api.util.ReflectionUtil;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
