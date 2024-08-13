@@ -83,7 +83,7 @@ dependencies {
     implementation 'net.kyori:adventure-text-serializer-gson:4.17.0'
     implementation 'net.kyori:adventure-text-serializer-legacy:4.17.0'
 
-    implementation 'org.jline:jline:3.20.0'
+    implementation 'org.jline:jline:3.26.3'
 
     testImplementation("me.earth.headlessmc:headlessmc-api:${headlessmc_version}:test-fixtures")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'

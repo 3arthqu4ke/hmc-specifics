@@ -71,6 +71,11 @@ jobs:
         run: mkdir -p run/mods
       - name: List mod files
         run: ls ${{ matrix.version.dir }}/build/libs
+      - name: Upload ${{ matrix.version.mc }} Jars
+        uses: actions/upload-artifact@v4
+        with:
+          name: jars-${{ matrix.version.mc }}
+          path: ${{ matrix.version.dir }}/build/libs/*-release.jar
       - name: Copy mod jar
         run: cp ${{ matrix.version.dir }}/build/libs/hmc-specifics-${{ matrix.version.mc }}-*-${{ matrix.version.type }}-release.jar run/mods
       - name: Run the MC client
