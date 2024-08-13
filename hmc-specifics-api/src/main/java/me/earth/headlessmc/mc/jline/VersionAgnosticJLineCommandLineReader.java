@@ -15,6 +15,8 @@ import org.jline.utils.OSUtils;
 
 import java.io.IOError;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -77,6 +79,13 @@ public class VersionAgnosticJLineCommandLineReader extends JLineCommandLineReade
                 return TerminalBuilder.builder().dumb(dumb).build();
             } catch (Throwable throwable) {
                 LOGGER.error("Failed to create terminal with fallback TerminalBuilder", throwable);
+                if (isNotATTYException(throwable)) {
+                    Object terminal = CICheck.ciCheck();
+                    if (terminal instanceof Terminal) {
+                        return (Terminal) terminal;
+                    }
+                }
+
                 return hackInTerminal();
             }
         }
@@ -129,6 +138,37 @@ public class VersionAgnosticJLineCommandLineReader extends JLineCommandLineReade
         }
 
         HMCLog4JAppender.install(hmc.getCommandLine());
+    }
+
+    private boolean isNotATTYException(Throwable throwable) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        throwable.printStackTrace(pw);
+        pw.println();
+        pw.close();
+        return sw.toString().contains("not a tty");
+        /* Happens on Github-CI-Runners
+        java.lang.IllegalStateException: Unable to create a system terminal
+            at MC-BOOTSTRAP/jline.terminal@3.12.1/org.jline.terminal.TerminalBuilder.doBuild(TerminalBuilder.java:313)
+            at MC-BOOTSTRAP/jline.terminal@3.12.1/org.jline.terminal.TerminalBuilder.build(TerminalBuilder.java:259)
+            at TRANSFORMER/headlessmc@2.1.0/me.earth.headlessmc.mc.jline.VersionAgnosticJLineCommandLineReader.buildTerminal(VersionAgnosticJLineCommandLineReader.java:77)
+            ...
+            at java.base/java.lang.Thread.run(Thread.java:831)
+            Suppressed: java.util.NoSuchElementException
+                at java.base/java.util.ServiceLoader$2.next(ServiceLoader.java:1308)
+                ...
+            Suppressed: java.util.NoSuchElementException
+                at java.base/java.util.ServiceLoader$2.next(ServiceLoader.java:1308)
+                ...
+            Suppressed: java.io.IOException: Not a tty
+                at MC-BOOTSTRAP/jline.terminal@3.12.1/org.jline.terminal.impl.ExecPty.current(ExecPty.java:44)
+                at MC-BOOTSTRAP/jline.terminal@3.12.1/org.jline.terminal.TerminalBuilder.doBuild(TerminalBuilder.java:373)
+                ... 8 more
+            Caused by: java.io.IOException: Error executing 'tty': not a tty
+                at MC-BOOTSTRAP/jline.terminal@3.12.1/org.jline.utils.ExecHelper.exec(ExecHelper.java:42)
+                at MC-BOOTSTRAP/jline.terminal@3.12.1/org.jline.terminal.impl.ExecPty.current(ExecPty.java:41)
+                ... 9 more
+         */
     }
 
 }

@@ -27,12 +27,9 @@ public class NewJLineProviders {
         } catch (Throwable t) {
             LOGGER.warn("Failed to create terminal through JnaTerminalProvider", t);
             if (t.getMessage().contains("Inappropriate ioctl for device")) {
-                try {
-                    Class.forName("me.earth.mc_runtime_test.McRuntimeTest");
-                    LOGGER.warn("Probably running inside CI, using dumb Terminal");
-                    return new DumbTerminal(System.in, System.out);
-                } catch (ClassNotFoundException | IOException e) {
-                    LOGGER.warn("Failed to detect McRuntimeTest or open dumb Terminal", e);
+                Object terminal = CICheck.ciCheck();
+                if (terminal instanceof Terminal) {
+                    return (Terminal) terminal;
                 }
             }
         }
