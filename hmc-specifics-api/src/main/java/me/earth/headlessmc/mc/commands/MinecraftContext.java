@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MinecraftContext extends CommandContextImpl {
-    protected final Minecraft mc;
+    public final Minecraft mc;
 
     public MinecraftContext(HeadlessMc ctx, Minecraft mc) {
         super(ctx);
@@ -41,6 +41,11 @@ public class MinecraftContext extends CommandContextImpl {
                 }
             }
         }
+    }
+
+    @Override
+    public void add(Command command) {
+        super.add(command);
     }
 
     @Override
