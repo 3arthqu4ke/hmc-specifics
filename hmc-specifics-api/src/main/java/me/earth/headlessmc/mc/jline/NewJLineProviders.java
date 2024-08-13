@@ -3,13 +3,11 @@ package me.earth.headlessmc.mc.jline;
 import me.earth.headlessmc.logging.Logger;
 import me.earth.headlessmc.logging.LoggerFactory;
 import org.jline.terminal.Terminal;
-import org.jline.terminal.impl.DumbTerminal;
 import org.jline.terminal.impl.jansi.JansiTerminalProvider;
 import org.jline.terminal.impl.jna.JnaTerminalProvider;
 import org.jline.terminal.spi.SystemStream;
 import org.jline.terminal.spi.TerminalProvider;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
