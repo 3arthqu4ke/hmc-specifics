@@ -155,11 +155,6 @@ dependencies {
         exclude module: 'jline'
     }
 
-    jarLibs (group: 'org.jline', name: 'jline-terminal-jna', version: '3.20.0') {
-        exclude module: 'jline'
-        exclude module: 'jline-terminal'
-    }
-
     forgeJarLibs (group: 'org.jline', name: 'jline-terminal-jna', version: '3.12.1') {
         exclude module: 'jline'
         exclude module: 'jline-terminal'
