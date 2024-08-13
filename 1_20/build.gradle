@@ -146,7 +146,6 @@ for (String platform_capitalized : ['Fabric', 'Neoforge', 'Lexforge']) {
                 it.configurations += [ project.configurations.forgeJarLibs ]
             }
 
-            it.configurations += [ project.configurations.forgeJarLibs ]
             it.dependencies {
                 exclude(dependency('org.jline:jline:.*'))
                 exclude(dependency('com.google.errorprone:error_prone_annotations:.*'))
