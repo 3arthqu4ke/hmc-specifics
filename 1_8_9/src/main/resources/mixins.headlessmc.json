@@ -5,7 +5,6 @@
   "refmap": "mixins.headlessmc.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "IBootstrap",
     "MixinEntityPlayerSP",
     "MixinFontRenderer",
     "MixinGuiButton",
