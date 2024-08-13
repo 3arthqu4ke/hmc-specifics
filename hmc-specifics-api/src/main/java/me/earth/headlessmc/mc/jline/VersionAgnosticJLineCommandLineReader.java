@@ -86,7 +86,16 @@ public class VersionAgnosticJLineCommandLineReader extends JLineCommandLineReade
                     }
                 }
 
-                return hackInTerminal();
+                try {
+                    return hackInTerminal();
+                } catch (Throwable t) {
+                    Object terminal = CICheck.ciCheck();
+                    if (terminal instanceof Terminal) {
+                        return (Terminal) terminal;
+                    }
+
+                    throw t;
+                }
             }
         }
     }
