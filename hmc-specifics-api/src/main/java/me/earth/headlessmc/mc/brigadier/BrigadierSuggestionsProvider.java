@@ -30,8 +30,6 @@ import java.util.regex.Pattern;
 public class BrigadierSuggestionsProvider<T> {
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("(\\s+)");
     private final List<Map.Entry<String, String>> commandUsage = new ArrayList<>();
-    private static final boolean onlyShowIfCursorPastError = false;
-    private static final boolean commandsOnly = false;
 
     private final CommandDispatcher<T> dispatcher;
     private final T suggestionsProvider;
@@ -41,6 +39,9 @@ public class BrigadierSuggestionsProvider<T> {
 
     private CompletableFuture<Suggestions> pendingSuggestions;
     private ParseResults<T> currentParse;
+
+    private boolean onlyShowIfCursorPastError = false;
+    private boolean commandsOnly = false;
 
     public BrigadierSuggestionsProvider(CommandDispatcher<T> dispatcher,
                                         T suggestionsProvider,
@@ -77,16 +78,22 @@ public class BrigadierSuggestionsProvider<T> {
         return result;
     }
 
+    public boolean checkIfCommandAndSkipPrefix(StringReader stringReader) {
+        boolean isCommand = stringReader.canRead() && stringReader.peek() == '/';
+        if (isCommand) {
+            stringReader.skip();
+        }
+
+        return isCommand;
+    }
+
     public void updateCommandInfo() {
         if (this.currentParse != null && !this.currentParse.getReader().getString().equals(line)) {
             this.currentParse = null;
         }
 
         StringReader stringReader = new StringReader(line);
-        boolean isCommand = stringReader.canRead() && stringReader.peek() == '/';
-        if (isCommand) {
-            stringReader.skip();
-        }
+        boolean isCommand = checkIfCommandAndSkipPrefix(stringReader);
 
         boolean commandOrCommandsOnly = commandsOnly || isCommand;
         int length = this.line.length();
@@ -167,6 +174,22 @@ public class BrigadierSuggestionsProvider<T> {
                 ? CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownCommand().createWithContext(parseResults.getReader())
                 : CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument().createWithContext(parseResults.getReader());
         }
+    }
+
+    public boolean isCommandsOnly() {
+        return commandsOnly;
+    }
+
+    public void setCommandsOnly(boolean commandsOnly) {
+        this.commandsOnly = commandsOnly;
+    }
+
+    public boolean isOnlyShowIfCursorPastError() {
+        return onlyShowIfCursorPastError;
+    }
+
+    public void setOnlyShowIfCursorPastError(boolean onlyShowIfCursorPastError) {
+        this.onlyShowIfCursorPastError = onlyShowIfCursorPastError;
     }
 
 }
