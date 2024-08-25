@@ -63,7 +63,7 @@ public class LoginCommand extends AbstractLoginCommand {
                                             fullJavaSession.getMcProfile().getId(),
                                             fullJavaSession.getMcProfile().getMcToken().getAccessToken());
         mc.setMcAccount(mcAccount);
-        ctx.log("Logged in with " + mcAccount + " successfully.");
+        ctx.log("Logged in with " + mcAccount.getName() + " successfully.");
     }
 
 }
