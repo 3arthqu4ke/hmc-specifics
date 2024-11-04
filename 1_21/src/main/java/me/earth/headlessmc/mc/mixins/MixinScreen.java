@@ -6,9 +6,11 @@ import me.earth.headlessmc.mc.gui.GuiScreen;
 import me.earth.headlessmc.mc.gui.TextField;
 import me.earth.headlessmc.mc.IdManager;
 import me.earth.headlessmc.mc.ReflectionHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,6 +30,8 @@ public abstract class MixinScreen implements GuiScreen, GuiEventListener {
     @Shadow
     private List<Renderable> renderables;
 
+    @Shadow public abstract void init(Minecraft minecraft, int i, int j);
+
     @Override
     public void click(int x, int y, int button) {
         mouseClicked(x, y, button);
@@ -41,6 +45,11 @@ public abstract class MixinScreen implements GuiScreen, GuiEventListener {
                    .map(GuiButton.class::cast)
                    .forEach(buttons::add);
         buttons.addAll(ReflectionHelper.findAll(this, GuiButton.class));
+        //noinspection ConstantValue
+        if (AbstractContainerScreen.class.isInstance(this)) {
+            AbstractContainerScreen.class.cast(this).getMenu().slots.stream().map(GuiButton.class::cast).forEach(buttons::add);
+        }
+
         return new ArrayList<>(buttons);
     }
 
