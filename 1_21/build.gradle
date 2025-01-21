@@ -139,6 +139,7 @@ for (String platform_capitalized : ['Fabric', 'Neoforge', 'Lexforge']) {
         it.group = 'build'
         it.archiveClassifier = "${platform}-release"
         from remapJarTask.outputs
+        it.excludes += '**module-info.class'
         it.configurations += [ project.configurations.jarLibs ]
         if ('fabricShadowJar' != it.name) {
             if ('lexforgeShadowJar' != it.name) { // on 1.20.6 and 1.21 lexforge ships jline 3.12.1-jna
@@ -251,6 +252,7 @@ afterEvaluate {
 }
 
 tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
+    exclude '**module-info.class'
     from("LICENSE") {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         rename { "${it}_${project.archivesBaseName}" }
