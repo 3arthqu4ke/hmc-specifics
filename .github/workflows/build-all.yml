@@ -9,6 +9,7 @@ jobs:
       matrix:
         version:
           - { dir: hmc-specifics-api, mc: api, lex: api, neo: api, java: 8 }
+          - { dir: 1_21, mc: 1.21.4, lex: 54.0.17, neo: 70-beta, java: 21 }
           - { dir: 1_21, mc: 1.21.3, lex: 53.0.7, neo: 11-beta, java: 21 }
           - { dir: 1_21, mc: 1.21.1, lex: 52.0.2, neo: 4, java: 21 }
           - { dir: 1_21, mc: 1.21, lex: 51.0.24, neo: 96-beta, java: 21 }
