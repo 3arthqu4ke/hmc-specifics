@@ -238,11 +238,3 @@ publishing {
 publish {
     dependsOn build
 }
-
-remapFabricSourcesJar {
-    enabled = false
-}
-
-remapLexforgeSourcesJar {
-    enabled = false
-}
