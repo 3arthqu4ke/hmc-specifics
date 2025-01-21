@@ -7,7 +7,7 @@ plugins {
     id 'maven-publish'
     //TODO: investigate unimined not working on 1.3.4,
     // cause duplicate file coremod something
-    id 'xyz.wagyourtail.unimined' version '1.3.10-SNAPSHOT'
+    id 'xyz.wagyourtail.unimined' version '1.3.10'
 }
 
 group = 'me.earth.headlessmc'
