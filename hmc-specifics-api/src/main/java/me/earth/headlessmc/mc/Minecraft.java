@@ -3,6 +3,7 @@ package me.earth.headlessmc.mc;
 import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
+import me.earth.headlessmc.mc.keyboard.Keyboard;
 import me.earth.headlessmc.mc.player.Player;
 import me.earth.headlessmc.mc.scheduling.SchedulesTasks;
 
@@ -40,6 +41,8 @@ public interface Minecraft extends SchedulesTasks, Adapter {
      * instrumentation.
      */
     FontRenderer getFontRenderer();
+
+    Keyboard getKeyboard();
 
     /**
      * Connects you to the server with the given Ip and port.
