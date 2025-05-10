@@ -9,8 +9,10 @@ import net.minecraft.client.GuiMessage;
 import net.minecraft.client.GuiMessageTag;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.locale.Language;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.chat.HoverEvent;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,7 +48,12 @@ public class MixinChatComponent {
                 }
             } catch (Exception e) {
                 if (AdventureWrapper.OUTPUT_THROWABLES) {
-                    LOGGER.error("Failed to serialize {}", content.getString(), e);
+                    if (e.getMessage().contains("Action not allowed: ")
+                        || e.getMessage().contains("type not allowed: ")) {
+                        ansiString = content.getString();
+                    } else {
+                        LOGGER.error("Failed to serialize {}", content.getString(), e);
+                    }
                 }
             }
 

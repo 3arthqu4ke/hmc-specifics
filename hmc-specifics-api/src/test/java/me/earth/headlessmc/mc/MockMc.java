@@ -3,6 +3,7 @@ package me.earth.headlessmc.mc;
 import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
+import me.earth.headlessmc.mc.keyboard.Keyboard;
 import me.earth.headlessmc.mc.player.Player;
 
 import java.util.concurrent.CompletableFuture;
@@ -31,6 +32,11 @@ public enum MockMc implements Minecraft {
 
     @Override
     public FontRenderer getFontRenderer() {
+        return null;
+    }
+
+    @Override
+    public Keyboard getKeyboard() {
         return null;
     }
 
