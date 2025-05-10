@@ -40,7 +40,11 @@ public class MixinChatComponent {
                 }
             } catch (Exception e) {
                 if (AdventureWrapper.OUTPUT_THROWABLES) {
-                    LOGGER.error("Failed to serialize {}", content.getString(), e);
+                    if (e.getMessage().contains("Action not allowed: ")) {
+                        ansiString = content.getString();
+                    } else {
+                        LOGGER.error("Failed to serialize {}", content.getString(), e);
+                    }
                 }
             }
 

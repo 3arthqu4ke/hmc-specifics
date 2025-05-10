@@ -4,6 +4,8 @@ import me.earth.headlessmc.api.HasId;
 import me.earth.headlessmc.api.HasName;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class Key implements HasName, HasId, Comparable<Key> {
     private final String name;
     private final int id;
@@ -32,6 +34,18 @@ public class Key implements HasName, HasId, Comparable<Key> {
     @Override
     public int compareTo(@NotNull Key o) {
         return Integer.compare(id, o.id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Key key = (Key) o;
+        return id == key.id && scanCode == key.scanCode && Objects.equals(name, key.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id, scanCode);
     }
 
     public static Key createFromMinecraftName(String name, int id, int scanCode) {

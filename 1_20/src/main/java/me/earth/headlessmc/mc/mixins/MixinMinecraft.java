@@ -4,11 +4,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.realmsclient.RealmsMainScreen;
+import me.earth.headlessmc.mc.KeyboardImpl;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.auth.McAccount;
 import me.earth.headlessmc.mc.brigadier.BrigadierWrapper;
 import me.earth.headlessmc.mc.gui.FontRenderer;
 import me.earth.headlessmc.mc.gui.GuiScreen;
+import me.earth.headlessmc.mc.keyboard.Keyboard;
 import me.earth.headlessmc.mc.player.Player;
 import me.earth.headlessmc.mc.FontRendererImpl;
 import me.earth.headlessmc.mc.Initializer;
@@ -83,6 +85,11 @@ public abstract class MixinMinecraft extends MixinBlockableEventLoop
     @Override
     public GuiScreen getScreen() {
         return (GuiScreen) screen;
+    }
+
+    @Override
+    public Keyboard getKeyboard() {
+        return new KeyboardImpl(net.minecraft.client.Minecraft.class.cast(this));
     }
 
     @Override
