@@ -9,6 +9,7 @@ import me.earth.headlessmc.api.command.ParseUtil;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.keyboard.Key;
 import me.earth.headlessmc.mc.keyboard.Keyboard;
+import me.earth.headlessmc.mc.keyboard.RobotKeyboard;
 import me.earth.headlessmc.mc.util.ExtendedTable;
 
 import java.util.concurrent.Executors;
@@ -29,8 +30,12 @@ public class KeyCommand extends AbstractMinecraftCommand implements ScheduledCom
 
     @Override
     public void execute(String line, String... args) throws CommandException {
-        Keyboard keyboard = mc.getKeyboard();
-        if (args.length <= 1) {
+        Keyboard keyboard = CommandUtil.hasFlag("-robot", args)
+                                || CommandUtil.hasFlag("-robot-list", args)
+                ? new RobotKeyboard()
+                : mc.getKeyboard();
+
+        if (args.length <= 1 || CommandUtil.hasFlag("-robot-list", args)) {
             ctx.log(new ExtendedTable<Key>()
                     .addAll(keyboard)
                     .withInt("id", Key::getId)
@@ -39,9 +44,21 @@ public class KeyCommand extends AbstractMinecraftCommand implements ScheduledCom
             return;
         }
 
-        Key key = CommandUtil.hasFlag("-id", args)
-                ? HasId.getById(ParseUtil.parseI(args[1]), keyboard)
-                : HasName.getByName(args[1], keyboard);
+        Key key;
+        if (CommandUtil.hasFlag("-custom", args)) {
+            if (args.length < 4) {
+                throw new CommandException("Please specify name, id, and scancode.");
+            }
+
+            String name = args[1];
+            int id = ParseUtil.parseI(args[2]);
+            int scanCode = ParseUtil.parseI(args[3]);
+            key = new Key(name, id, scanCode);
+        } else {
+            key = CommandUtil.hasFlag("-id", args)
+                    ? HasId.getById(ParseUtil.parseI(args[1]), keyboard)
+                    : HasName.getByName(args[1], keyboard);
+        }
 
         if (key == null) {
             throw new CommandException("Failed to find key: " + args[1]);
