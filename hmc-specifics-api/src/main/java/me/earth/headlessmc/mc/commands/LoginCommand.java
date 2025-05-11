@@ -4,22 +4,37 @@ import me.earth.headlessmc.api.HeadlessMc;
 import me.earth.headlessmc.api.command.CommandException;
 import me.earth.headlessmc.api.command.CommandUtil;
 import me.earth.headlessmc.auth.AbstractLoginCommand;
+import me.earth.headlessmc.auth.ValidatedAccount;
 import me.earth.headlessmc.mc.Minecraft;
+import me.earth.headlessmc.mc.auth.AccountRefreshingService;
 import me.earth.headlessmc.mc.auth.McAccount;
 import net.raphimc.minecraftauth.step.java.session.StepFullJavaSession;
 
+import java.util.Locale;
 import java.util.UUID;
 
 public class LoginCommand extends AbstractLoginCommand {
+    protected final AccountRefreshingService accountRefreshingService;
     protected final Minecraft mc;
 
-    public LoginCommand(HeadlessMc ctx, Minecraft mc) {
+    public LoginCommand(HeadlessMc ctx, AccountRefreshingService accountRefreshingService, Minecraft mc) {
         super(ctx);
+        this.accountRefreshingService = accountRefreshingService;
         this.mc = mc;
     }
 
     @Override
     public void execute(String line, String... args) throws CommandException {
+        String refresh = CommandUtil.getOption("--refresh", args);
+        if (refresh == null && CommandUtil.hasFlag("--refresh", args)) {
+            refresh = ""; // unknown option to output error
+        }
+
+        if (refresh != null) {
+            handleRefresh(refresh);
+            return;
+        }
+
         if (CommandUtil.hasFlag("-current", args)) {
             McAccount mcAccount = mc.getMcAccount();
             if (mcAccount == null) {
@@ -57,8 +72,52 @@ public class LoginCommand extends AbstractLoginCommand {
         super.execute(line, args);
     }
 
+    private void handleRefresh(String refresh) throws CommandException {
+        switch (refresh.toLowerCase(Locale.ENGLISH)) {
+            case "start":
+                if (accountRefreshingService.start(ctx.getConfig(), mc)) {
+                    ctx.log("Account refresh started.");
+                } else {
+                    ctx.log("Account refresh already running.");
+                }
+                break;
+            case "stop":
+                if (accountRefreshingService.stop()) {
+                    ctx.log("Account refresh stopped.");
+                } else {
+                    ctx.log("Account refresh not running.");
+                }
+
+                break;
+            case "status":
+                if (accountRefreshingService.isRunning()) {
+                    ctx.log("Account refresh running.");
+                } else {
+                    ctx.log("Account refresh not running.");
+                }
+
+                break;
+            case "now":
+                try {
+                    if (accountRefreshingService.refresh(mc, ctx.getConfig())) {
+                        ctx.log("Account refreshed successfully.");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                    ctx.log(e.getMessage());
+                }
+
+                break;
+            default:
+                throw new CommandException("Invalid refresh (start/stop/status/now) option: " + refresh);
+        }
+    }
+
     @Override
     protected void onSuccessfulLogin(StepFullJavaSession.FullJavaSession fullJavaSession) {
+        ValidatedAccount validatedAccount = new ValidatedAccount(fullJavaSession, "");
+        accountRefreshingService.setValidatedAccount(validatedAccount);
+
         McAccount mcAccount = new McAccount(fullJavaSession.getMcProfile().getName(),
                                             fullJavaSession.getMcProfile().getId(),
                                             fullJavaSession.getMcProfile().getMcToken().getAccessToken());
