@@ -3,6 +3,9 @@ package me.earth.headlessmc.mc.gui;
 import me.earth.headlessmc.api.HasId;
 import me.earth.headlessmc.mc.Adapter;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Represents a GuiElement which belongs to a {@link GuiScreen}.
  */
@@ -31,5 +34,12 @@ public interface GuiElement extends HasId, Adapter {
      * @return the height of this element.
      */
     int getHeight();
+
+    /**
+     * @return Ansi String with tool tip
+     */
+    default List<String> getTooltip() {
+        return Collections.emptyList();
+    }
 
 }

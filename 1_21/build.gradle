@@ -4,7 +4,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'java'
     id 'maven-publish'
-    id 'xyz.wagyourtail.unimined' version '1.3.10'
+    id 'xyz.wagyourtail.unimined' version '1.3.14'
 }
 
 group 'me.earth.headlessmc'
@@ -192,9 +192,29 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
 
+tasks.register("runnableFabricShadowJar", ShadowJar) {
+    dependsOn(fabricJar)
+    it.group = 'build'
+    it.archiveClassifier = "fabric-dev-run-client"
+    from fabricJar.outputs
+    it.excludes += '**module-info.class'
+    it.configurations += [ project.configurations.jarLibs ]
+    // Mixin is signed
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.SF'
+}
+
 afterEvaluate {
     fabricRunClient {
+        dependsOn(runnableFabricShadowJar)
         standardInput = System.in
+        classpath = classpath.filter {
+            !it.toString().contains("${projectDir}/build/classes/java/".replace('/', File.separator))
+                    && !it.toString().contains("${projectDir}/build/resources/".replace('/', File.separator))
+        }
+
+        classpath += files("${projectDir}/build/libs/hmc-specifics-${minecraft_version}-${version}-fabric-dev-run-client.jar".replace('/', File.separator))
+        systemProperties['hmc.jline.enabled'] = 'false'
         if (rootProject.property('hmc.lwjgl').toBoolean()) {
             jvmArgs += ["-javaagent:${configurations.lwjglAgent.files.iterator().next()}"]
             systemProperties['joml.nounsafe'] = 'true'

@@ -20,6 +20,11 @@ public interface Player extends Adapter {
     void openMenu();
 
     /**
+     * Opens the Inventory Menu, similar to pressing E.
+     */
+    void openInventory();
+
+    /**
      * Closes the current screen.
      */
     void closeScreen();

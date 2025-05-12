@@ -1,6 +1,8 @@
 package me.earth.headlessmc.mc.commands;
 
 import me.earth.headlessmc.api.HeadlessMc;
+import me.earth.headlessmc.api.command.CommandException;
+import me.earth.headlessmc.api.command.CommandUtil;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.gui.GuiButton;
 import me.earth.headlessmc.mc.gui.GuiElement;
@@ -20,7 +22,27 @@ public class GuiCommand extends AbstractGuiCommand
     }
 
     @Override
-    protected void execute(GuiScreen gui, String... args) {
+    protected void execute(GuiScreen gui, String... args) throws CommandException {
+        String tooltip = CommandUtil.getOption("--tooltip", args);
+        if (tooltip != null) {
+            List<String> tooltipLines = gui.getAllElements()
+                    .stream()
+                    .filter(e -> tooltip.equals(String.valueOf(e.getId())))
+                    .map(GuiElement::getTooltip)
+                    .findFirst()
+                    .orElse(null);
+
+            if (tooltipLines == null || tooltipLines.isEmpty()) {
+                ctx.log("No tooltip found.");
+            } else {
+                tooltipLines.forEach(ctx::log);
+            }
+
+            return;
+        } else if (CommandUtil.hasFlag("--tooltip", args)) {
+            throw new CommandException("Please specify an element to get the tooltip of.");
+        }
+
         List<GuiButton> guiButtons = gui.getButtons();
         guiButtons.sort(Comparator.comparingInt(GuiElement::getId));
 
@@ -36,17 +58,15 @@ public class GuiCommand extends AbstractGuiCommand
         ctx.log(String.format(
             "Screen: %s\nButtons:\n%s\nTextFields:\n%s",
             gui.getHandle().getClass().getName(),
-            table(guiButtons, verbose)
-                .insert("on", "type", g -> g.isEnabled() ? "1" : "0").build(),
+            table(guiButtons, verbose).insert("on", "type", g -> g.isEnabled() ? "1" : "0").build(),
             table(textFields, verbose).build()));
         
         if (!all.isEmpty()) {
-            ctx.log("Other:\n" + table(all, verbose).build());
+            ctx.log("Other:\n" + table(all, verbose).buildCalculatingAnsiWidth());
         }
     }
 
-    private <T extends GuiElement> ExtendedTable<T> table(Iterable<T> elements,
-                                                          boolean verbose) {
+    private <T extends GuiElement> ExtendedTable<T> table(Iterable<T> elements, boolean verbose) {
         return new ExtendedTable<T>()
             .addAll(elements)
             .withInt("id", GuiElement::getId)
