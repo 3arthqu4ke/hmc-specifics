@@ -7,12 +7,14 @@ import me.earth.headlessmc.api.command.impl.HelpCommand;
 import me.earth.headlessmc.api.command.impl.MemoryCommand;
 import me.earth.headlessmc.mc.Minecraft;
 import me.earth.headlessmc.mc.SpecificProperties;
+import me.earth.headlessmc.mc.auth.AccountRefreshingService;
 import me.earth.headlessmc.runtime.commands.RuntimeQuitCommand;
 
 import java.util.List;
 import java.util.Map;
 
 public class MinecraftContext extends CommandContextImpl {
+    private final AccountRefreshingService accountRefreshingService = new AccountRefreshingService();
     public final Minecraft mc;
 
     public MinecraftContext(HeadlessMc ctx, Minecraft mc) {
@@ -29,7 +31,7 @@ public class MinecraftContext extends CommandContextImpl {
         add(new MemoryCommand(ctx));
         add(new ConnectCommand(ctx, mc));
         add(new DisconnectCommand(ctx, mc));
-        add(new LoginCommand(ctx, mc));
+        add(new LoginCommand(ctx, accountRefreshingService, mc));
         add(new KeyCommand(ctx, mc));
         add(new MessageCommand(ctx, mc));
         add(new CommandCommand(ctx, mc));
@@ -61,6 +63,10 @@ public class MinecraftContext extends CommandContextImpl {
         } else {
             super.executeCommand(cmd, line, args);
         }
+    }
+
+    public AccountRefreshingService getAccountRefreshingService() {
+        return accountRefreshingService;
     }
 
 }

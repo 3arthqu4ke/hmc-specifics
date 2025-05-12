@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static me.earth.headlessmc.mc.SpecificProperties.ACCOUNT_REFRESH_ENABLED;
 import static me.earth.headlessmc.mc.SpecificProperties.DEBUG_JLINE;
 
 public class SpecificsInitializer extends RuntimeInitializer {
@@ -31,6 +32,9 @@ public class SpecificsInitializer extends RuntimeInitializer {
         MinecraftContext context = new MinecraftContext(hmc, mc);
         hmc.getCommandLine().setCommandContext(context);
         hmc.getCommandLine().setBaseContext(context);
+        if (hmc.getConfig().get(ACCOUNT_REFRESH_ENABLED, true)) {
+            context.getAccountRefreshingService().start(hmc.getConfig(), mc);
+        }
     }
 
     @Override
