@@ -95,8 +95,8 @@ public abstract class MixinScreen implements GuiScreen, GuiEventListener {
                         text,
                         slot.x + xOffset,
                         slot.y + yOffset,
-                        AbstractContainerMenu.SLOT_SIZE,
-                        AbstractContainerMenu.SLOT_SIZE,
+                        18, //AbstractContainerMenu.SLOT_SIZE,
+                        18, //AbstractContainerMenu.SLOT_SIZE,
                         slot.index,
                         tooltip
                 ));
@@ -114,8 +114,8 @@ public abstract class MixinScreen implements GuiScreen, GuiEventListener {
                         text,
                         0,
                         0,
-                        AbstractContainerMenu.SLOT_SIZE,
-                        AbstractContainerMenu.SLOT_SIZE,
+                        18, //AbstractContainerMenu.SLOT_SIZE,
+                        18, // AbstractContainerMenu.SLOT_SIZE,
                         result.size(),
                         tooltip
                 ));
