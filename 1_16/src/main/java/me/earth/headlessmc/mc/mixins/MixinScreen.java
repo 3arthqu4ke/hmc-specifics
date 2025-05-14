@@ -61,7 +61,13 @@ public abstract class MixinScreen implements GuiScreen, GuiEventListener {
 
     @Override
     public List<TextField> getTextFields() {
-        return new ArrayList<>(ReflectionHelper.findAll(this, TextField.class));
+        Set<TextField> textFields = new LinkedHashSet<>();
+        this.buttons.stream()
+                .filter(TextField.class::isInstance)
+                .map(TextField.class::cast)
+                .forEach(textFields::add);
+        textFields.addAll(ReflectionHelper.findAll(this, TextField.class));
+        return new ArrayList<>(textFields);
     }
 
     @Override
