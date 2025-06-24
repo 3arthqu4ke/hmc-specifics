@@ -56,7 +56,7 @@ public abstract class MixinLocalPlayer implements Player {
     @Override
     public void closeScreen() {
         if (Minecraft.getInstance().screen != null) {
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().screen.onClose();
         }
     }
 
