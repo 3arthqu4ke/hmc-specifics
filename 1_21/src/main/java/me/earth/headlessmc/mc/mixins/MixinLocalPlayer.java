@@ -38,13 +38,17 @@ public abstract class MixinLocalPlayer implements Player {
 
     @Override
     public void openMenu() {
-        Minecraft.getInstance().setScreen(null);
+        if (Minecraft.getInstance().screen != null) {
+            Minecraft.getInstance().screen.onClose();
+        }
         Minecraft.getInstance().pauseGame(false);
     }
 
     @Override
     public void openInventory() {
-        Minecraft.getInstance().setScreen(null);
+        if (Minecraft.getInstance().screen != null) {
+            Minecraft.getInstance().screen.onClose();
+        }
         if (Minecraft.getInstance().gameMode != null
             && Minecraft.getInstance().gameMode.isServerControlledInventory()) {
             LocalPlayer.class.cast(this).sendOpenInventory();
@@ -56,7 +60,7 @@ public abstract class MixinLocalPlayer implements Player {
     @Override
     public void closeScreen() {
         if (Minecraft.getInstance().screen != null) {
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().screen.onClose();
         }
     }
 
